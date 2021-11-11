@@ -1,0 +1,62 @@
+@charset "utf-8";
+/*
+ 파일명:		layout.css
+ 설   명:		Cams 레이아웃
+ 작성자:		glim
+ 최초작성일:	2016/07/06
+ 최종수정일:	2016/07/27
+ 
+*/
+
+#wrap { width:auto; min-width:1113px; min-height:100%; padding-bottom:70px; margin-top:-70px; }
+#wrap #header { position:absolute; top:70px; left:0; z-index:8; width:100%; } /* 20160727 수정 */
+#wrap #content  { position:relative; padding-top:167px; }
+#wrap .con_inner { width:90%; min-width:980px; margin:0 auto; }
+
+/*********  header style *********/
+#wrap .con_header .con_inner { overflow:hidden; }
+#wrap h1.logo { float:left; width:180px; height:27px; }
+
+#wrap .con_header { padding:13px 0 12px; } 
+#wrap .con_header .h_account { overflow:hidden; float:right; margin-top:2px; }
+#wrap .con_header .h_account .private_info { line-height:22px; }
+#wrap .con_header .h_account .btn_account_group,
+#wrap .con_header .h_account .private_info { float:left; }
+#wrap .con_header .h_account .private_info { margin-right:10px; font-size:11px; color:#666; line-height:23px; }
+#wrap .con_header .h_account .private_info .ico { overflow:hidden; display:inline-block; width:22px; height:22px; margin-right:5px; border-radius:50%; vertical-align:top; }
+
+#wrap .con_header .h_account .btn_account_group { margin-top:1px; }
+#wrap .con_header .h_account .btn_account_group a.btn_acc { display:inline-block; min-width:55px; height:10px; padding:3px 0 5px; margin-left:5px; border:1px solid #858585; border-radius:2px; color:#666; font-size:11px; line-height:1; text-align:center; }
+
+
+/* gnb style */
+#wrap #gnb {width:100%; height:45px; background:url(../images/cams/bg_gnb_line.gif) left top repeat-x; }
+#wrap #gnb .g_navi { margin:0 40px; text-align:center; }
+#wrap #gnb .g_navi > li { width:auto; position:relative; display:inline-block; margin:0 10px; vertical-align:top;}
+#wrap #gnb .g_navi > li.dep_item_1 { margin-left:0; }
+#wrap #gnb .g_navi > li > a { overflow:hidden; display:block; height:17px; padding:14px 0; text-align:center; font-size:15px; color:#cacaca; }
+#wrap #gnb .g_navi > li:hover > a,
+#wrap #gnb .g_navi > li.active > a { background-color:#b8134f; color:#fff; }
+#wrap #gnb .g_navi li.dep_item_1 > a { width:160px; }
+#wrap #gnb .g_navi li.dep_item_2 > a { width:160px; }
+#wrap #gnb .g_navi li.dep_item_3 > a { width:188px; }
+#wrap #gnb .g_navi li.dep_item_4 > a { width:160px; }
+#wrap #gnb .g_navi li.dep_item_5 > a { width:127px; }
+
+#wrap #gnb .g_navi li > ul { display:none; z-index:5; position:absolute; top:45px; left:0; width:100%; background-color:#b8134f; }
+#wrap #gnb .g_navi li > ul > li { text-align:left;}
+#wrap #gnb .g_navi li > ul a { display:block; padding:9px 14px 8px; color:#f2dee3; font-size:12px; font-family:Dotum,'돋움'; }
+
+#wrap #gnb .g_navi > li:hover > ul { display:block; }
+
+#wrap #gnb .g_navi > li > ul a:hover,
+#wrap #gnb .g_navi > li > ul a.on { color:#fff; background-color:#860131; }
+
+/*********  footer style *********/
+#wrap #footer { position:absolute; bottom:0; width:100%; margin:29px 0 25px; text-align:center; }
+#wrap #footer .copyright { color:#c4c4c4; }
+
+
+
+
+
