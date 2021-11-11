@@ -1,23 +1,16 @@
 import React from 'react';
+import Lists from './List';
+import Pagination from './Pagination';
+import Search from './Search';
+import Footer from './Footer';
  
 function BoardList() {
     return(
-        <div>
-            <h2>게시판</h2>
-            <div>
-                <table className='listTable'>
-                    <tbody>
-                        <tr>
-                            <td className='listTableIndex th'>index</td>
-                            <td className='listTableTitle th'>title</td>
-                        </tr>
-                        <tr>
-                            <td className='listTableIndex'></td>
-                            <td className='listTableTitle noData'>작성된 글이 없습니다.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div id="content" style={{padding:50}}>
+            <Search></Search>
+            <Lists></Lists>
+            <Footer></Footer>
+            <Pagination></Pagination>
         </div>
     )
 }

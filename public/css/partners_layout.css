@@ -1,0 +1,110 @@
+@charset "utf-8";
+/*
+ 파일명:		layout.css
+ 설   명:		파트너 레이아웃
+ 작성자:		glim
+ 최초작성일:	2016/07/06
+ 최종수정일:	2016/07/26
+*/
+ 
+body {background:#fff;min-width:1263px; height:100% !important;}
+#wrap {position:relative; display:block; width:100%; min-height:100%;min-width:1263px;}
+#body {position:relative; display:block; padding:0 40px 0 260px; width:100%;  height:100% !important; box-sizing:border-box;}
+
+.error_type {padding-right:40px;}
+
+/* 20160726 수정 */
+a.btn_mypage,
+a.btn_logout {display:inline-block;border:solid 1px #6f6f6f;background-color:#424242;color:#b8b8b8;height:12px;line-height:11px;font-size:11px; padding:4px 4px 2px;}
+a.btn_mypage:hover ,
+a.btn_logout:hover  {text-decoration:none;color:#b8b8b8;}
+a.btn_mypage:active,
+a.btn_logout:active {text-decoration:none;color:#b8b8b8;}
+a.btn_mypage:visited,
+a.btn_logout:visited {text-decoration:none;color:#b8b8b8;}
+a.btn_mypage:focus,
+a.btn_logout:focus  {text-decoration:none;color:#b8b8b8;}
+
+#lnb{position:fixed;display:block; width:220px; left:0; height:100% !important; background:#383838; vertical-align:top; }
+
+/* S:lnb ********************************* */
+#lnb .con:after {content:".";clear:both;display:block;height:0;visibility:hidden;font-size:0;line-height:0;}
+#lnb .logo {height:67px;text-align:center; background-color:#fff;}
+#lnb .logo a {display:inline-block; padding-top:5px; color:#fff;text-decoration:none;}
+
+#lnb .user_info {position:relative;padding:20px 20px 20px 60px;min-height:70px;border-bottom:solid 1px #4c4c4c;}
+#lnb .user_info .icon {position:absolute;left:20px;}
+#lnb .user_info .uinfo_con {width:100%;box-sizing:border-box;color:#fff;}
+#lnb .user_info .uinfo_con .row1,
+#lnb .user_info .uinfo_con .row2 {display:block;}
+/* 20160726 수정 */
+#lnb .user_info .uinfo_con .row1 .user_id,
+#lnb .user_info .uinfo_con .row1 .user_name {display:block; }
+#lnb .user_info .uinfo_con .row1 .user_id { color:#fff; }
+#lnb .user_info .uinfo_con .row1 .user_name { margin-top:5px; color:#b8b8b8;}
+#lnb .user_info .uinfo_con .row2 {margin-top:13px;}
+#lnb .user_info .uinfo_con .row2 a { margin-right:5px; }
+
+#lnb .lnb_inner{ position:relative; height:auto; margin:0 auto; padding:0 0 0 0; }
+ 
+	#lnb .lnb_inner ul.l_navi{position:relative; padding:0 0 0;margin:0; }
+	#lnb .lnb_inner ul.l_navi { width:100%; margin:0; padding:0; list-style-type:none; } 
+	#lnb .lnb_inner ul.l_navi > li { width:100%; position:relative; display:block; margin:0 0 0 0; min-height:49px; text-align:left; border-bottom:solid 1px #4c4c4c; }
+	#lnb .lnb_inner ul.l_navi > li:first-child { margin-top:0;}
+		
+	#lnb .lnb_inner ul.l_navi > li > a { z-index:2;position:relative;width:100%; text-decoration:none; display: inline-block; margin: 0 auto; vertical-align: middle; color: #999; font-size:13px; height:49px; padding:17px 3px 17px 22px; text-align:left; box-sizing:border-box;}
+	#lnb .lnb_inner ul.l_navi > li > a > i{ float:right;margin-right:15px; display:inline-block;width:11px;height:11px;color:transparent; overflow:hidden;text-indent:-9999px; line-height:999px; background-image:url(../images/partners/lnb_1dep_arr.png);background-repeat:no-repeat;background-position:top right;}
+	#lnb .lnb_inner ul.l_navi > li:hover > a > i, 
+	#lnb .lnb_inner ul.l_navi > li.active > a > i{ background-position:bottom right;  }
+	#lnb .lnb_inner ul.l_navi > li:hover > a, 
+	#lnb .lnb_inner ul.l_navi > li.active > a{ color:#fff; background:#ca024b;  }
+	#lnb .lnb_inner ul.l_navi > li.active > ul {display:block;}
+	
+	/* 2depth */
+	#lnb .lnb_inner ul.l_navi > li > ul {z-index:1;width:220px; display:none; position:relative; border-top:solid 1px #dfdfdf; background-color:#282828; margin-top:-1px; padding:0;}
+	#lnb .lnb_inner ul.l_navi > li > ul > li  { padding:0 0 0 0; line-height:14px; text-align:left; }
+	#lnb .lnb_inner ul.l_navi > li > ul > li > a {font-size:12px; height:24px; padding:12px 0 4px 40px ; display:block; color:#999; text-decoration:none; text-align:left; white-space:nowrap;}
+	#lnb .lnb_inner ul.l_navi > li > ul > li > a:hover {text-decoration:none; }
+	#lnb .lnb_inner ul.l_navi > li > ul > li > a > i {display:inline-block;width:11px;height:11px;color:transparent; overflow:hidden;text-indent:-9999px; line-height:999px;	background-image:url(../images/partners/lnb_2dep_ico.gif);background-repeat:no-repeat;background-position:0px 5px;}
+
+	#lnb .lnb_inner ul.l_navi > li > ul > li:hover > a,
+	#lnb .lnb_inner ul.l_navi > li > ul > li.active > a	{color:#fff; background-color:#141414}
+	#lnb .lnb_inner ul.l_navi > li > ul > li:hover > a > i,
+	#lnb .lnb_inner ul.l_navi > li > ul > li.active > a > i	{ background-position:0px -35px;}
+	#lnb .lnb_inner ul.l_navi > li > ul > li:hover > ul,
+	#lnb .lnb_inner ul.l_navi > li > ul > li.active > ul {display:block;}
+
+	/* 3depth */
+	#lnb .lnb_inner ul.l_navi > li > ul > li > ul {display:none;padding:5px 0 5px 40px; background:#191919;}
+	#lnb .lnb_inner ul.l_navi > li > ul > li > ul > li  { padding:0 0; line-height:14px; text-align:left;  }
+	#lnb .lnb_inner ul.l_navi > li > ul > li > ul > li > a {font-size:11px; display:inline-block; height:16px; padding:4px 0 4px 10px; color:#696462; font-weight:400; text-decoration:none; text-align:left;}
+	#lnb .lnb_inner ul.l_navi > li > ul > li > ul > li.active > a,
+	#lnb .lnb_inner ul.l_navi > li > ul > li > ul > li > a:hover {color:#ccc;}
+	
+	/* E:lnb ********************************* */
+	
+	#footer {display:block;position:absolute; bottom:20px; width:100%; }
+	#footer .footer_inner {overflow:hidden; height:35px;  box-sizing:border-box; text-align:center;}
+	#footer .copy { display:block; font-size:11px; color:#9c9c9c; line-height:16px; letter-spacing:-0.5px;}
+	
+		
+#body #content{ position:relative; width:100%; height:auto; background:transparent; padding:20px 0 40px ; box-sizing:border-box;z-index:0;}
+#body #content {*zoom:1;}
+#body #content:after {content:".";clear:both;display:block;height:0;visibility:hidden;font-size:0;line-height:0;}
+#body #Pcontent:after {content:".";clear:both;display:block;height:0;visibility:hidden;font-size:0;line-height:0;}
+
+/* e:content body ************************************************************************************************/	
+
+
+
+/* s:chxbox/radiobox group ***************************************/
+.ui_group {}
+.ui_group li {display:inline-block;margin-right:28px; position:relative;vertical-align:top;}
+.ui_group li input[type=checkbox].ui_chk + label {padding-left:30px; min-height:19px; height:auto;} 
+.ui_group li input[type=checkbox].ui_chk + label:before {margin-right:5px;font-size:13px;color:#666;}
+.ui_group li input[type=checkbox].ui_chk + label:before {position:absolute;left:0;} 
+/* e:chxbox/radiobox group ***************************************/
+
+/* s:login - 20160726 추가 ***************************************/
+body#login { min-height:auto; min-width:auto; height:100% !important; }
+/* e:login ***************************************/

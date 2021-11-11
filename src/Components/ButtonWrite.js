@@ -13,9 +13,9 @@ function ButtonWrite() {
  
     return(
         <Link to='/BoardNew'>
-            <button onClick={onClick}>
-                Write
-            </button>
+            <a className="btn_white" onClick={onClick}>
+                글쓰기
+            </a>
         </Link>
     );
 }
