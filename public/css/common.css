@@ -230,12 +230,6 @@ input[data-type=date].ui_cal + .ui-datepicker-trigger {margin-left:-24px;vertica
 .paging .ico:visited   { display:inline-block; vertical-align:top;}
 .paging .ico i { vertical-align:top;width:24px; height:24px; background:url(../images/common/page_nav.gif) no-repeat; }
 
-/* s 내가 추가 */
-.paging .my1 i { vertical-align:top;width:24px; height:24px; background:url(../images/common/page_nav.gif) no-repeat; }
-.paging .my2 i { vertical-align:top;width:24px; height:24px; background:url(../images/common/page_nav.gif) no-repeat; }
-.paging .my3 i { vertical-align:top;width:24px; height:24px; background:url(../images/common/page_nav.gif) no-repeat; }
-.paging .my4 i { vertical-align:top;width:24px; height:24px; background:url(../images/common/page_nav.gif) no-repeat; }
-/* e 내가 추가 */
 
 .paging a.btn_page_frist.ico i { background-position:0 0; }
 .paging a.btn_page_prve.ico i { background-position:-24px 0; margin-left:-1px;}
@@ -258,30 +252,9 @@ input[data-type=date].ui_cal + .ui-datepicker-trigger {margin-left:-24px;vertica
 .paging a.btn_page_next.ico:hover i { background-position:-48px -24px; }
 .paging a.btn_page_last.ico:hover i { background-position:-72px -24px; }
 
-/*s내가 추가한것들 */
-
-.my1 i { background-position:0 0; }
-.my2 i { background-position:-24px 0; margin-left:-1px;}
-.my3 i { background-position:-48px 0; }
-.my4 i { background-position:-72px 0; margin-left:-1px;}
-
-.my1.disabled i,
-.my1.disabled:hover i { background-position:0 -48px; }
-.my2.disabled i,
-.my2.disabled:hover i { background-position:-24px -48px; }
-.my3.disabled i,
-.my3.disabled:hover i { background-position:-48px -48px; }
-.my4.disabled i,
-.my4.disabled:hover i { background-position:-48px -48px; }
 
 
 
-.my1:hover i { background-position:0 -24px; }
-.my2:hover i { background-position:-24px -24px; }
-.my3:hover i { background-position:-48px -24px; }
-.my4:hover i { background-position:-72px -24px; }
-
-/*e 내가 추가한것들 */
 
 .paging .page_num{ display:inline-block; padding:0 5px; vertical-align:top; }
 .paging .page_num a { display:inline-block; min-width:12px; height:22px; line-height:22px;padding:0 5px; margin:0 3px 0 3px; color:#555; font-size:12px; text-decoration:none; border:solid 1px #dedede;}

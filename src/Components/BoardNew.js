@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
- 
+
 function BoardNew() {
     let now = new Date();   // 현재 일자
     

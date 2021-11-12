@@ -1,8 +1,5 @@
-import { createAction, handleActions } from "redux-actions";
-
-const CHANGE_TOTALCOUNT = 'list/CHANGE_TOTALCOUNT';
-
-export const changeTotalCount = createAction(CHANGE_TOTALCOUNT,totalCount => totalCount);
+import {  handleActions } from "redux-actions";
+import {CHANGE_TOTALCOUNT} from '../action/list'
 
 const initialState = {
     totalCount: 0,
