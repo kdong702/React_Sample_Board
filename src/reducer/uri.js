@@ -1,16 +1,9 @@
-// action type 설정
-const URI_SAVE = 'URI_SAVE';
-  
 // data 초기화
+import {URI_SAVE} from '../action/uri'
+
 const initialState = {
     inputData: '/'
 }
-
-// write 버튼 클릭 시 호출될 함수
-export const uriSave = (inputData) => ({
-    type: URI_SAVE,
-    inputData: inputData
-})
 
 export default function uriReducer(state = initialState, action){
     switch(action.type) {
