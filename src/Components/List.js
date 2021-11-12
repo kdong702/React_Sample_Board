@@ -1,70 +1,37 @@
 import React,{useState,useEffect} from "react";
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import {changePageNo, changePageSize,changeBlockSize} from '../reducer/pagination';
-import {changeSearchType,changeSearchKeyword} from '../reducer/search';
-import {changeTotalCount} from '../reducer/list';
-
+import {changeBlockSize} from '../action/pagination';
+import {changeTotalCount} from '../action/list';
 
 const Lists= () => {
-
     const [lists, setLists] = useState([]);
-    
     const searchType = useSelector(state => state.search.searchType);
     const searchKeyword = useSelector(state => state.search.searchKeyword);
     const pageNo = useSelector(state => state.pagination.pageNo);
     const pageSize = useSelector(state => state.pagination.pageSize);
-    const blockSize =  useSelector(state => state.pagination.blockSize);
     const totalCount = useSelector(state => state.list.totalCount);
     const dispatch = useDispatch();
    
     useEffect(()=>{
         async function fetchDate(){
             const url = 'http://192.168.100.74:18080/homepage/api/notification/list.do?pageNo='+pageNo+'&pageSize='+pageSize+'&searchType='+searchType+'&searchKeyword='+searchKeyword;
-            console.log("url" + url);
+            console.log(url);
             const response = await axios.get(url);
-            console.log(response.data);
+            console.log(response.data.RESULT_DATA.list);
             setLists(response.data.RESULT_DATA.list);
-        //  dispatch(changePageNo(response.data.RESULT_DATA.search.pageNo));
-        //  dispatch(changePageSize(response.data.RESULT_DATA.search.pageSize)); 지금은 필요없을듯
-        //  dispatch(changeBlockSize(response.data.RESULT_DATA.search.blockSize));
-        //  dispatch(changeSearchKeyword(response.data.RESULT_DATA.search.searchKeyword));
-        //  dispatch(changeSearchType(response.data.RESULT_DATA.search.searchType));
+            dispatch(changeBlockSize(response.data.RESULT_DATA.search.blockSize));
             dispatch(changeTotalCount(response.data.RESULT_DATA.search.totalCount));
         }
         fetchDate();
-        console.log("1");
       },[pageNo,pageSize,searchType,searchKeyword,totalCount]);
-      console.log(lists);
-      console.log("totalCount"+ totalCount);
-   
-      
-    
-    
-    // const noList = ()=>{
-    //     return (
-    //         <tr className="boardList">
-    //             <td colSpan="5">데이터가 없습니다.</td>
-    //         </tr>
-    //     );
-    // };
 
-    // const normalList = ({lists}) =>{
-    //     return (
-    //         lists.map(list=>(
-    //         <tr className="boardList" key={list.seq}>
-    //             <td className="first input">{list.seq}</td>
-    //             <td>{list.title}</td>
-    //             <td>{list.contents}</td>
-    //             <td className="last input">{list.regDt}</td>
-    //         </tr>  
-    //     )));
-    // };
+   
     var list;
     if (totalCount=== 0 ){
         list = 
                 <tr className="boardList">
-                    <td colSpan="5">데이터가 없습니다.</td>
+                    <td colSpan="5">조회된 리스트가 없습니다.</td>
                 </tr>;
     }else {
         list = lists.map(item=>(

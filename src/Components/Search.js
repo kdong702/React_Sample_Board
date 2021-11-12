@@ -1,26 +1,21 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {changeSearchType,changeSearchKeyword,changeInput} from '../reducer/search';
+import {changeSearchType,changeSearchKeyword,changeInput} from '../action/search';
 
 const Search = ()=>{
     const searchType = useSelector(state => state.search.searchType);
     const searchKeyword = useSelector(state => state.search.searchKeyword);
     const dispatch = useDispatch();
-    console.log("searchtype" + {searchType});
-    console.log("searchType type" + typeof({searchType}));
+   
 
         
     const submitHandler = (e) =>{
         e.preventDefault();
-        console.log("SUBMIT##############")
-        console.log(e.target.selectList.value);
-        console.log(e.target.searchKeyword.value);
         dispatch(changeSearchType(e.target.selectList.value));
         dispatch(changeSearchKeyword(e.target.searchKeyword.value));
     }
 
     const changeHandler = (e) => {
-        console.log(e.target.value);
         dispatch(changeInput(e.target.value));
     }
           
