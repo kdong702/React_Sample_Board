@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
  
 import { useDispatch } from 'react-redux';
-import { uriSave } from '../Modules/uriReducer';
+import { uriSave } from '../action/uri';
  
 function ButtonWrite() {
     const dispatch = useDispatch();

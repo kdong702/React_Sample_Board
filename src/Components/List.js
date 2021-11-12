@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from "react";
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import {changePageNo, changePageSize,changeBlockSize} from '../Modules/pagination';
-import {changeSearchType,changeSearchKeyword} from '../Modules/search';
-import {changeTotalCount} from '../Modules/list';
+import {changePageNo, changePageSize,changeBlockSize} from '../reducer/pagination';
+import {changeSearchType,changeSearchKeyword} from '../reducer/search';
+import {changeTotalCount} from '../reducer/list';
 
 
 const Lists= () => {

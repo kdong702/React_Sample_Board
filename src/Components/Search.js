@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {changeSearchType,changeSearchKeyword,changeInput} from '../Modules/search';
+import {changeSearchType,changeSearchKeyword,changeInput} from '../reducer/search';
 
 const Search = ()=>{
     const searchType = useSelector(state => state.search.searchType);

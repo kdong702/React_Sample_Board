@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {changePageNo, changePageSize} from '../Modules/pagination';
+import {changePageNo, changePageSize} from '../reducer/pagination';
 
 const Pagination = () => {
     const pageNo = useSelector(state => state.pagination.pageNo);
@@ -61,7 +61,7 @@ const Pagination = () => {
     return(
         <div className="paging">
             <a  className="ico btn_page_frist" onClick={()=> goPage(firstPageNo)}><i>앞으로</i></a>
-            <a  className="ico btn_page_prev" onClick={()=>goPage(prevPageNo)}><i>이전</i></a>
+            <a  className="ico btn_page_prve" onClick={()=>goPage(prevPageNo)}><i>이전</i></a>
             <span className="page_num">
             {pageNumbers.map(number => (
               <a key={(number)}  onClick={() => goPage(number)} className={ number === pageNo ? "here" : "" }  id={number}>
