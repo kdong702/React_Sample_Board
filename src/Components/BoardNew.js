@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTitle, setContents, setFiles, setViewYn, setFileImage } from '../action/board';
 
 function BoardNew() {
-
-    console.log("hi");
-
     const [title, setTitle] = useState(''); // 제목
     const [contents, setContents] = useState('');   // 내용
     const [files, setFiles] = useState(''); // 파일
@@ -23,7 +22,9 @@ function BoardNew() {
     };
     const handleFilesChange = (e) => {
         setFiles(e.target.files);
+        console.log(e.target.files);
         setFileImage(URL.createObjectURL(e.target.files[0]));
+        console.log(URL.createObjectURL(e.target.files[0]));
     };
 
     // 폼 전송 로직
@@ -33,15 +34,12 @@ function BoardNew() {
         let formData = new FormData();
 
         // 유효성 검사
-        // function validate() {
-        //     console.log("hi");
-        //     if(title="") {
-        //         alert('제목을 입력하세요.');
-        //         return false;
-        //     }
+        // function validate(title) {
+        //      if(!title || title.target.value==="") {
+        //          alert('제목을 입력하세요.');
+        //          return false;
+        //      }
         // }
-
-        console.log("hi");
 
         formData.append("title", title);
         formData.append("contents", contents);
@@ -54,10 +52,9 @@ function BoardNew() {
             }
           })
         .then(function (response) {
-            // 성공
             alert("글이 정상적으로 등록되었습니다.")  
        }).catch(function (error) {
-            // 에러
+            alert("실패")
             console.log(error)
        });
     }
@@ -76,7 +73,7 @@ function BoardNew() {
                     <tbody>
                     <tr>
                         <th scope="row">제목</th>
-                        <td><input type='text' id="title" name="title" title="제목" style={{width: "100%"}} onChange={handleTitle} value={title} /></td>
+                        <td><input type='text' id="title" name="title" title="제목" style={{width: "100%"}} onChange={handleTitle} /></td>
                         <th scope="row">노출 여부</th>
                         <td>
                             <select name="viewYn" style={{width: "62px"}} className="ui_sel" onChange={handleSelect}>
@@ -96,7 +93,7 @@ function BoardNew() {
                 </table>
                 <br/>
                 <div style={{marginBottom: "20px"}}>
-                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onChange={handleContent} value={contents}/>
+                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onChange={handleContent}/>
                 </div>
                 <div className="btn_group">
                     <a href="/" className="btn_pos" type='button' onClick={onSave}>전송</a>

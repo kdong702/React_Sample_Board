@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import {changeBlockSize} from '../action/pagination';
 import {changeTotalCount,createCheckBox,deleteCheckBox} from '../action/list';
+import { Link, Router } from "react-router-dom";
 
 const Lists= () => {
     const [lists, setLists] = useState([]);
@@ -62,7 +63,9 @@ const Lists= () => {
                  <tr className="boardList" key={item.seq}>
                     <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
                     <td className="first input">{item.seq}</td>
-                    <td><a href={"/BoardDetail?seq=" + item.seq}>{item.title}</a></td>
+                        <Link to={"/BoardDetail?seq=" + item.seq}>
+                            <td>{item.title}</td>
+                        </Link>
                     <td>{item.contents}</td>
                     <td className="last input">{item.regDt}</td>
                     {item.fileId !== null ?

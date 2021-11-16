@@ -8,8 +8,9 @@ import Excel from './Excel';
  
 function Footer() {
 	// store 의 상태가 바뀔 때마다 상태를 받아온다.
-    const uri = useSelector(state => state.uriReducer.inputData);
     const checkedList = useSelector(state => state.list.checkedList);
+    const uri = useSelector(state => state.uri.inputData)
+
  
     return(
         <div className="btn_group">
