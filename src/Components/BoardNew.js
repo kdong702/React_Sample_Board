@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function BoardNew() {
-    let now = new Date();   // 현재 일자
-    
+
+    console.log("hi");
+
     const [title, setTitle] = useState(''); // 제목
     const [contents, setContents] = useState('');   // 내용
     const [files, setFiles] = useState(''); // 파일
@@ -32,12 +33,15 @@ function BoardNew() {
         let formData = new FormData();
 
         // 유효성 검사
-        const validate = () => {
-            if(!title || (title.name && title.name.trim() === '')) {
-                alert('제목을 입력하세요.');
-                return;
-            }
-        };
+        // function validate() {
+        //     console.log("hi");
+        //     if(title="") {
+        //         alert('제목을 입력하세요.');
+        //         return false;
+        //     }
+        // }
+
+        console.log("hi");
 
         formData.append("title", title);
         formData.append("contents", contents);
@@ -94,8 +98,8 @@ function BoardNew() {
                 <div style={{marginBottom: "20px"}}>
                     <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onChange={handleContent} value={contents}/>
                 </div>
-                <div class="btn_group">
-                    <a href="" class="btn_pos" type='button' onClick={onSave}>전송</a>
+                <div className="btn_group">
+                    <a href="/" className="btn_pos" type='button' onClick={onSave}>전송</a>
                 </div>
         </form>
     </div>

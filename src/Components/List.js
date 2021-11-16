@@ -37,7 +37,7 @@ const Lists= () => {
         list = lists.map(item=>(
                  <tr className="boardList" key={item.seq}>
                     <td className="first input">{item.seq}</td>
-                    <td>{item.title}</td>
+                    <td><a href={"/BoardDetail?seq=" + item.seq}>{item.title}</a></td>
                     <td>{item.contents}</td>
                     <td className="last input">{item.regDt}</td>
                  </tr> 
