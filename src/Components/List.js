@@ -62,7 +62,7 @@ const Lists= () => {
                  <tr className="boardList" key={item.seq}>
                     <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
                     <td className="first input">{item.seq}</td>
-                    <td>{item.title}</td>
+                    <td><a href={"/BoardDetail?seq=" + item.seq}>{item.title}</a></td>
                     <td>{item.contents}</td>
                     <td className="last input">{item.regDt}</td>
                     {item.fileId !== null ?
