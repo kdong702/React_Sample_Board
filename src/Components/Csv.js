@@ -10,6 +10,7 @@ const Csv = () =>{
     const searchKeyword = useSelector(state => state.search.searchKeyword);
     const pageNo = useSelector(state => state.pagination.pageNo);
     const totalCount = useSelector(state => state.list.totalCount);
+    const checkedList = useSelector(state => state.list.checkedList);
     const [lists, setLists] = useState([]);
     const headers = [
       {label: "아이디", key: "seq"},
@@ -33,19 +34,16 @@ const Csv = () =>{
             setLists(response.data.RESULT_DATA.list);
         }
         fetchDate();
-      },[pageNo,searchType,searchKeyword,totalCount]);
+      },[searchType,searchKeyword,totalCount]);
 
-    // const getFileName = () =>{
-    //   let d = new Date();
-    //   let dformat = `${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}`;
-
-    //   console.log("getCurrentDate : ", dformat);
-    //   return "GridWidget_" + dformat + ".csv";
-    // }
+    //선택한 리스트 출력 바꾸고 싶다면 csvLink data ={lists}로 수정
+    var selectedList = [];
+    selectedList = lists.filter(list => checkedList.includes(list.seq));
+    
     
     return(
       <a className="btn_black">
-      <CSVLink headers={headers} data={lists} filename="list.csv" style={{color:"white"}}>CSV 다운로드</CSVLink> 
+      <CSVLink headers={headers} data={selectedList} filename="list.csv" style={{color:"white"}}>CSV 다운로드</CSVLink> 
       </a>
     );
 

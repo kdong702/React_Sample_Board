@@ -22,7 +22,7 @@ const Excel = () =>{
             setLists(response.data.RESULT_DATA.list);
         }
         fetchDate();
-      },[pageNo,searchType,searchKeyword,totalCount]);
+      },[searchType,searchKeyword,totalCount]);
 
     const clickHandler = () =>{
         var ws = xlsx.utils.json_to_sheet(lists);
