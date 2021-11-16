@@ -60,17 +60,17 @@ const Pagination = () => {
 
     return(
         <div className="paging">
-            <a  className="ico btn_page_frist" onClick={()=> goPage(firstPageNo)}><i>앞으로</i></a>
-            <a  className="ico btn_page_prve" onClick={()=>goPage(prevPageNo)}><i>이전</i></a>
+            <a  className="ico btn_page_frist" onClick={()=> goPage(firstPageNo)} style={{cursor:"pointer"}}><i>앞으로</i></a>
+            <a  className="ico btn_page_prve" onClick={()=>goPage(prevPageNo)} style={{cursor:"pointer"}}><i>이전</i></a>
             <span className="page_num">
             {pageNumbers.map(number => (
-              <a key={(number)}  onClick={() => goPage(number)} className={ number === pageNo ? "here" : "" }  id={number}>
+              <a key={(number)}  onClick={() => goPage(number)} className={ number === pageNo ? "here" : "" }  id={number} style={{cursor:"pointer"}}>
                 {number}
               </a>
             ))}
             </span>
-            <a  className="ico btn_page_next" onClick={()=> {goPage(nextPageNo); return false;}}><i>다음</i></a>
-            <a  className="ico btn_page_last" onClick={()=>goPage(finalPage)}><i>마지막</i></a>
+            <a  className="ico btn_page_next" onClick={()=> {goPage(nextPageNo); return false;}} style={{cursor:"pointer"}}><i>다음</i></a>
+            <a  className="ico btn_page_last" onClick={()=>goPage(finalPage)} style={{cursor:"pointer"}}><i>마지막</i></a>
         </div>
     );
 };
