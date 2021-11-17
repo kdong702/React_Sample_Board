@@ -3,6 +3,8 @@ import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { setFileImage } from "../action/board";
+import { useSelector,useDispatch} from 'react-redux';
+import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
 
 // function searchParam(key, {location}) {
 //     return new URLSearchParams(location.search).get(key);
@@ -15,9 +17,9 @@ const BoardDetail = () => {
     const params = new URLSearchParams(search);
     const seq = params.get('seq');
 
-    console.log(seq);
-
     const [details, setDetails] = useState([]);
+    const dispatch = useDispatch();
+
     
     useEffect(()=>{
         async function showDetail(){
@@ -28,8 +30,33 @@ const BoardDetail = () => {
             setDetails(response.data.RESULT_DATA.notice);
         }
         showDetail();
-      },[]);
+    },[]);
 
+    function onRemove(seq) {
+             axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
+            .then(res=>{
+                console.log(seq + "삭제 완료" );
+                dispatch(changeMessage(seq+"번 삭제 완료"));
+                dispatch(changeMessageCode("0000"));
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(changeMessage("에러 발생 관리자에게 문의하세요22!!!!"));
+                dispatch(changeMessageCode("0011"));
+            });
+        ;
+    }
+
+    const clickHandler = () =>{
+        if(window.confirm(details.seq + "번 삭제하시겠습니까?")){
+            console.log(details.seq);
+            onRemove(details.seq);
+            dispatch(togglePopup(true));
+            console.log("삭제");
+        }else{
+            console.log("취소");
+        }
+    }
     return (
         <div id="content" style={{padding: "50px", width: "50%"}}>
             <form>
@@ -76,11 +103,11 @@ const BoardDetail = () => {
                     <a href className="btn_gray">
                         <span>목록</span>
                     </a>
-                    <Link to="">
-                    <a href className="btn_black">
+                    
+                    <a className="btn_black" style={{cursor:"pointer"}} onClick={clickHandler}>
                         <span>삭제</span>
                     </a>
-                    </Link>
+                    
                 </div>
             </form>
         </div>

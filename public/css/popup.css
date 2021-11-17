@@ -8,11 +8,11 @@
 */
 
 
-/* 모달팝업 */
+/* 모달팝업 popup_layer top left 수정했음 by 동현 */
 .modalPopup {display:none;position:fixed; _position:absolute; top:0; left:0; width:100%; min-height:100%; z-index:100;}
 .modalPopup .dimmed {position:absolute; top:0; left:0; width:100%; height:100%; background:#000; opacity:.5; filter:alpha(opacity=50);}
 .modalPopup .popup_layer {display:block;}
-.popup_layer {display:none; position: absolute; top: 50%; left: 50%; width: 510px; height:auto;  background-color:#fff; z-index: 10;}	
+.popup_layer {display:none; position: absolute; top: 40%; left: 39%; width: 510px; height:auto;  background-color:#fff; z-index: 10;}	
 .popup_layer h1{height:22px;line-height:22px;padding:11px 19px;font-size:16px;background-color:#ca024b; color:#fff;}
 .popup_layer .pop_container {border:solid 1px #ca024b; border-top:0;}
 .popup_layer div.pop_contents {clear:both;padding:20px 20px 20px;color: #666; max-height:790px;}

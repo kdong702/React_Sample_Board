@@ -1,5 +1,5 @@
 import {  handleActions } from "redux-actions";
-import {CHANGE_TOTALCOUNT,CREATE_CHECKBOX,DELETE_CHECKBOX} from '../action/list'
+import {CHANGE_TOTALCOUNT,CREATE_CHECKBOX,DELETE_CHECKBOX,RESET_CHECKBOX} from '../action/list'
 
 
 
@@ -24,6 +24,10 @@ export default handleActions(
             ...state,
             checkedList: state.checkedList.filter(item => item !== action.payload),
         }),
+        [RESET_CHECKBOX]: (state,action) =>({
+            ...state,
+            checkedList:[],
+        })
     },
     initialState
 );

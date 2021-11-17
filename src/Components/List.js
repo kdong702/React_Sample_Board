@@ -13,6 +13,7 @@ const Lists= () => {
     const pageSize = useSelector(state => state.pagination.pageSize);
     const totalCount = useSelector(state => state.list.totalCount);
     const checkedList = useSelector(state => state.list.checkedList);
+    const popupStatus = useSelector(state => state.popup.popupStatus);
     const dispatch = useDispatch();
    
     useEffect(()=>{
@@ -26,7 +27,7 @@ const Lists= () => {
             dispatch(changeTotalCount(response.data.RESULT_DATA.search.totalCount));
         }
         fetchDate();
-      },[pageNo,pageSize,searchType,searchKeyword,totalCount]);
+      },[pageNo,pageSize,searchType,searchKeyword,totalCount,popupStatus]);
     //개별체크
     const checkHandler = (e) => {
         if(e.target.checked){
@@ -63,14 +64,12 @@ const Lists= () => {
                  <tr className="boardList" key={item.seq}>
                     <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
                     <td className="first input">{item.seq}</td>
-                        <Link to={"/BoardDetail?seq=" + item.seq}>
-                            <td>{item.title}</td>
-                        </Link>
+                    <td><Link to={"/BoardDetail?seq=" + item.seq}>{item.title}</Link> </td>
                     <td>{item.contents}</td>
                     <td className="last input">{item.regDt}</td>
                     {item.fileId !== null ?
-                        <td className="ellipsis"><i class="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></td> : 
-                        <td className="ellipsis">파일없다</td>}
+                        <td className="ellipsis"><i className="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></td> : 
+                        <td className="ellipsis">파일X</td>}
                  </tr> 
         )); 
     }
