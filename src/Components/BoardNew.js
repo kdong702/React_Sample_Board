@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTitle, setContents, setFiles, setViewYn, setFileImage } from '../action/board';
-import {useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom';
 
 function BoardNew() {
     const [title, setTitle] = useState(''); // 제목
@@ -27,7 +27,10 @@ function BoardNew() {
         setFileImage(URL.createObjectURL(e.target.files[0]));
         console.log(URL.createObjectURL(e.target.files[0]));
     };
+
     let history = useHistory();
+
+    console.log(history);
 
     // 폼 전송 로직
     function onSave() {
@@ -89,7 +92,7 @@ function BoardNew() {
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
                             <input type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
-                            <img alt="" src={fileImage}  style={{width: "100%"}}/>
+                            <img alt="" src={fileImage} style={{width: "100%"}}/>
                         </td>
                     </tr>
                     </tbody>

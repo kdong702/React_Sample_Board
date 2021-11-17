@@ -1,8 +1,6 @@
 import {  handleActions } from "redux-actions";
 import {CHANGE_TOTALCOUNT,CREATE_CHECKBOX,DELETE_CHECKBOX,RESET_CHECKBOX} from '../action/list'
 
-
-
 const initialState = {
     totalCount: 0,
     checkedList : [

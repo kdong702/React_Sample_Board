@@ -1,17 +1,13 @@
 import axios from "axios";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Router } from "react-router-dom";
 import { setFileImage } from "../action/board";
 import { useSelector,useDispatch} from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
 
-// function searchParam(key, {location}) {
-//     return new URLSearchParams(location.search).get(key);
-//   };
-
 const BoardDetail = () => {
-    // https://znznzn.tistory.com/64
+    // 참고: https://znznzn.tistory.com/64
     const current = decodeURI(window.location.href);
     const search = current.split("?")[1];
     const params = new URLSearchParams(search);
@@ -19,7 +15,7 @@ const BoardDetail = () => {
 
     const [details, setDetails] = useState([]);
     const dispatch = useDispatch();
-
+    const [fileList, setFileList] = useState([]);
     
     useEffect(()=>{
         async function showDetail(){
@@ -28,6 +24,7 @@ const BoardDetail = () => {
             const response = await axios.get(url);
             //console.log(response.data.RESULT_DATA.notice);
             setDetails(response.data.RESULT_DATA.notice);
+            setFileList(response.data.RESULT_DATA.fileList);
         }
         showDetail();
     },[]);
@@ -83,6 +80,7 @@ const BoardDetail = () => {
                         <tr>
                             <th scope="row" style={{height: "100%"}}>첨부 이미지</th>
                             <td colSpan="3">
+                                {/* { fileList.fileId==='' ? "등록된 파일이 없습니다." : fileList[0].originalFileName} */}
                                 <img alt="" src=""  style={{width: "100%"}}/>
                             </td>
                         </tr>
@@ -95,15 +93,22 @@ const BoardDetail = () => {
                     </tbody>
                 </table>
                 <div className="btn_group">
-                    <Link to="/BoardUpdate">
-                        <a href className="btn_pos">
+                    <Link to={{
+                        pathname: "/BoardUpdate",
+                        state: {
+                            viewYn: details.viewYn,
+                            title: details.title,
+                            contents: details.contents,
+                            seq : seq
+                        }
+                    }}>
+                        <a className="btn_pos">
                             <span>수정</span>
                         </a>
                     </Link>
-                    <a href className="btn_gray">
+                    <a className="btn_gray">
                         <span>목록</span>
-                    </a>
-                    
+                    </a>                    
                     <a className="btn_black" style={{cursor:"pointer"}} onClick={clickHandler}>
                         <span>삭제</span>
                     </a>

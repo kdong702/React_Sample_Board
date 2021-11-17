@@ -11,7 +11,6 @@ function Footer() {
     const checkedList = useSelector(state => state.list.checkedList);
     const uri = useSelector(state => state.uri.inputData)
 
- 
     return(
         <div className="btn_group">
             <div className="fr">
