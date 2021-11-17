@@ -26,11 +26,14 @@ const Excel = () =>{
 
     const clickHandler = () =>{
         var ws = xlsx.utils.json_to_sheet(lists);
+        //headers 추가해주는 작업
         headers.forEach((x,idx)=>{
             const cellAdd = xlsx.utils.encode_cell({c:idx,r:0});
             ws[cellAdd].v = x;
         });
+        // 엑셀 북 생성
         var wb = xlsx.utils.book_new();
+        //엑셀 시트 이름 정해주기
         xlsx.utils.book_append_sheet(wb, ws, "Sheet1");
         xlsx.writeFile(wb, "list.xlsx");
     }  

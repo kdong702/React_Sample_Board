@@ -15,11 +15,7 @@ function Footer() {
     return(
         <div className="btn_group">
             <div className="fr">
-                {/* <li><ButtonHome /></li> */}
-                {/* 받아온 상태가 '/BoardNew' 가 아닐때만 버튼을 보여준다. */}
-                {uri !== '/BoardNew' ? <ButtonWrite /> : ''
-                }
-
+                <ButtonWrite /> 
                 {checkedList.length !== 0 ? <ButtonDelete></ButtonDelete> : ''}
                 <Excel></Excel>
                 <Csv></Csv>

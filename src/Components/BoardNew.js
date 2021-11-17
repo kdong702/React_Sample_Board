@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTitle, setContents, setFiles, setViewYn, setFileImage } from '../action/board';
+import {useHistory} from 'react-router-dom'
 
 function BoardNew() {
     const [title, setTitle] = useState(''); // 제목
@@ -26,6 +27,7 @@ function BoardNew() {
         setFileImage(URL.createObjectURL(e.target.files[0]));
         console.log(URL.createObjectURL(e.target.files[0]));
     };
+    let history = useHistory();
 
     // 폼 전송 로직
     function onSave() {
@@ -53,6 +55,7 @@ function BoardNew() {
           })
         .then(function (response) {
             alert("글이 정상적으로 등록되었습니다.")  
+            history.push("/");
        }).catch(function (error) {
             alert("실패")
             console.log(error)
@@ -96,7 +99,7 @@ function BoardNew() {
                     <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onChange={handleContent}/>
                 </div>
                 <div className="btn_group">
-                    <a href="/" className="btn_pos" type='button' onClick={onSave}>전송</a>
+                    <a className="btn_pos" type='button' onClick={onSave}>전송</a>
                 </div>
         </form>
     </div>
