@@ -1,5 +1,6 @@
 import React  from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import BoardList from './components/BoardList';
 import BoardNew from './components/BoardNew';
 import BoardDetail from './components/BoardDetail';
