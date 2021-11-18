@@ -1,34 +1,25 @@
 import axios from "axios";
-import queryString from "query-string";
 import { useEffect, useState } from "react";
-import { Link, Router } from "react-router-dom";
-import { setFileImage } from "../action/board";
-import { useSelector,useDispatch} from 'react-redux';
-import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
+import { Link } from "react-router-dom";
+import { useDispatch} from 'react-redux';
+import { togglePopup, changeMessageCode, changeMessage } from '../action/popup';
 import { useHistory } from "react-router";
 
 const BoardDetail = () => {
     // 참고: https://znznzn.tistory.com/64
+    // seq 가 일단 있어야 detail.do 로 notice, fileList 의 데이터들을 가져올 수 있었음.
     const current = decodeURI(window.location.href);
     const search = current.split("?")[1];
     const params = new URLSearchParams(search);
     const seq = params.get('seq');
 
     const [details, setDetails] = useState([]);
-    const dispatch = useDispatch();
     const [fileList, setFileList] = useState([]);
+
+    const dispatch = useDispatch();
+
     var history = useHistory();
-    // useEffect(()=>{
-    //     async function showDetail(){
-    //         const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
-    //         //console.log(url);
-    //         const response = await axios.get(url);
-    //         console.log(response.data.RESULT_DATA.notice);
-    //         setDetails(response.data.RESULT_DATA.notice);
-    //         setFileList(response.data.RESULT_DATA.fileList);
-    //     }
-    //     showDetail();
-    // },[]);
+
     useEffect(()=>{
         const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
         axios.get(url)
@@ -70,6 +61,7 @@ const BoardDetail = () => {
             console.log("취소");
         }
     }
+
     //목록으로 가기
     const goList = () => {
         history.push("/");
@@ -101,8 +93,16 @@ const BoardDetail = () => {
                         <tr>
                             <th scope="row" style={{height: "100%"}}>첨부 이미지</th>
                             <td colSpan="3">
-                                {/* { fileList.fileId==='' ? "등록된 파일이 없습니다." : fileList[0].originalFileName} */}
-                                <img alt="" src=""  style={{width: "100%"}}/>
+                                { !fileList.length ? "등록된 이미지가 없습니다." : 
+                                fileList.map((fileList) => (
+                                <div>
+                                    <a href={'http://192.168.100.74:18080/homepage/api/notification/download.do?saveFileName=' + fileList.saveFileName}>
+                                        {fileList.originalFileName}
+                                    </a>
+                                    <img alt="" src=""  style={{width: "100%"}}/>
+                                    <br/>
+                                </div>
+                                ))}    
                             </td>
                         </tr>
                         <tr>
@@ -120,7 +120,11 @@ const BoardDetail = () => {
                             viewYn: details.viewYn,
                             title: details.title,
                             contents: details.contents,
-                            seq : seq
+                            seq : seq,
+                            fileId: details.fileId,
+                            //saveFileName: fileList.saveFileName,
+                            //originalFileName: fileList.originalFileName
+                            fileList: fileList
                         }
                     }}>
                         <a className="btn_pos">
