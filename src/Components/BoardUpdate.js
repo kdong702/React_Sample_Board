@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { useDispatch} from 'react-redux';
+import {togglePopup,changeMessageCode,changeMessage,changeSeq} from '../action/popup';
 
 export default function BoardUpdate({location}) {
     // 초기값 
@@ -15,6 +17,8 @@ export default function BoardUpdate({location}) {
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState(initialViewYn);  // 노출 여부 
     const [fileImage, setFileImage] = useState(""); // 파일 미리보기
+
+    const dispatch = useDispatch();
 
     // 값이 onChange 될 때마다 호출되어 setTitle, setContent 에 값을 넣어 제어한다.
     const handleTitle = (e) => {
@@ -61,10 +65,13 @@ export default function BoardUpdate({location}) {
           })
         .then(function(response) {
             alert("글이 정상적으로 수정되었습니다.");
-            history.push("/");    
+            history.push("/BoardDetail?seq=" + seq);    
        }).catch(function (error) {
-            alert("실패");
-            console.log(error)
+           console.log(error)
+           dispatch(changeSeq(seq));
+           dispatch(changeMessage(seq+"번 글 수정 실패했습니다"));
+           dispatch(changeMessageCode("0001"));
+           dispatch(togglePopup(true));
        });
     }
 

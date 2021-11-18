@@ -17,7 +17,7 @@ function Footer() {
                 <ButtonWrite /> 
                 {checkedList.length !== 0 ? <ButtonDelete></ButtonDelete> : ''}
                 <Excel></Excel>
-                <Csv></Csv>
+                {checkedList.length !== 0 ? <Csv></Csv> : ''}
             </div>
         </div>
 
