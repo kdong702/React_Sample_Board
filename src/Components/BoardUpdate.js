@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useDispatch} from 'react-redux';
@@ -21,7 +21,20 @@ export default function BoardUpdate({location}) {
     const [viewYn, setViewYn] = useState(initialViewYn);  // 노출 여부
     const [files, setFiles] = useState(''); // 파일 → 파일은 보안 정책상 초기값을 줄 수 없다고 하여 '' 로 초기화.
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
-    const [fileList, setFileList] = useState([initialFileList]); // 파일 리스트 
+    const [fileList, setFileList] = useState(initialFileList); // 파일 리스트
+    const [fileSeqs, setFileSeqs] = useState([]); // 파일 seq!!!
+
+    // 첫 렌더링 때 seq 세팅
+    useEffect(() => {
+        function test() {
+            const tempSeqs = [];
+            for(let i=0; i<fileList.length; i++){
+                tempSeqs.push(fileList[i].fileSeq)
+            };
+            setFileSeqs(tempSeqs);
+        }       
+        test();
+    }, []);
 
     const dispatch = useDispatch();
 
@@ -42,7 +55,16 @@ export default function BoardUpdate({location}) {
         //console.log(URL.createObjectURL(e.target.files[0]));
     };
 
-    console.log(fileList);
+    // 삭제 버튼 클릭시 작동할 함수
+    const clickHandler = (seq, e) => {
+        console.log(seq);
+        // seq 배열에서 해당 seq 를 삭제
+        setFileSeqs(fileSeqs.filter(fileSeq => fileSeq !== seq));
+        // fileList 배열에서 해당 seq 를 가진 파일을 삭제 
+        setFileList( fileList.filter(file => file.fileSeq !== seq));
+
+        e.preventDefault();
+    }
 
     let history = useHistory();
     
@@ -55,9 +77,13 @@ export default function BoardUpdate({location}) {
         formData.append("title", title);
         formData.append("contents", contents);
         formData.append("viewYn", viewYn);
-        formData.append("files", files[0]);
-        //formData.append("fileId", fileId);
-        //formData.append("fileSeqs", [1]);
+        for (let i = 0; i < files.length; i++) {
+            // key, value or key, value, fileName
+            // 주의사항: key 의 값이 api 의 key 값과 같아야 한다. 
+            formData.append("files", files[i]);
+        }
+        formData.append("fileId", fileId);
+        formData.append("fileSeqs", fileSeqs);
 
         axios.post("http://192.168.100.74:18080/homepage/api/notification/update.do?seq=" + seq, formData, {
             headers: {
@@ -105,10 +131,11 @@ export default function BoardUpdate({location}) {
                             {/* <img alt="" src={fileImage}  style={{width: "100%"}}/> */}
                             <div>
                             { !fileList.length ? "" : 
-                                fileList[0].map((fileList) => (
+                                fileList.map((fileList) => (
                                 <div>
                                     {fileList.originalFileName + ' '}
-                                    <a style={{color:"red", cursor:"pointer"}} onclick="">X</a>
+                                    <a style={{color:"red", cursor:"pointer"}} 
+                                    onClick={(e)=>{clickHandler(fileList.fileSeq, e)}}>X</a>
                                     <br/>
                                 </div>
                                 ))} 

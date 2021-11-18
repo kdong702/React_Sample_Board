@@ -24,8 +24,8 @@ const BoardDetail = () => {
         const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
         axios.get(url)
         .then(res=>{
-            setDetails(res.data.RESULT_DATA.notice);
             setFileList(res.data.RESULT_DATA.fileList);
+            setDetails(res.data.RESULT_DATA.notice);
         })
         .catch(err => {
             console.log(err);
@@ -34,7 +34,15 @@ const BoardDetail = () => {
             dispatch(togglePopup(true));
         })
     },[]);
-    
+
+    //console.log(details);
+    console.log(fileList);
+    //console.log(fileList[0]);
+    // if(fileList.length){
+    //     console.log(fileList[0].fileSeq);
+    // }
+    //console.log(fileList[0].fileId);
+
     function onRemove(seq) {
              axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
             .then(res=>{
