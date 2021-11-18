@@ -1,7 +1,8 @@
 import * as types from '../action/board';
 
 const initialState = {
-    fileImage: ''
+    fileImage: '',
+    seq: 0
 };
 
 function board(state = initialState, action) {
@@ -11,6 +12,11 @@ function board(state = initialState, action) {
                 ...state,
                 fileImage: action.fileImage
         };
+        case types.SET_SEQ:
+            return {
+                ...state,
+                fileImage: action.seq
+            }
         default:
             return state;
     }

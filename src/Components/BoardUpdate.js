@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
@@ -7,15 +7,20 @@ export default function BoardUpdate({location}) {
     const initialTitle = location.state.title;
     const initialContents = location.state.contents;
     const initialViewYn = location.state.viewYn;
+    const initialFileList = location.state.fileList;
+
+    // update시 필요. fileId 는 게시글마다 fix 된 상태이기 때문에 그대로 가지고 있어도 됨!
     const seq = location.state.seq;
+    const fileId = location.state.fileId;
 
     // state 관리
     const [title, setTitle] = useState(initialTitle); // 제목
     const [contents, setContents] = useState(initialContents);   // 내용
-    const [files, setFiles] = useState(''); // 파일
-    const [viewYn, setViewYn] = useState(initialViewYn);  // 노출 여부 
-    const [fileImage, setFileImage] = useState(""); // 파일 미리보기
-
+    const [viewYn, setViewYn] = useState(initialViewYn);  // 노출 여부
+    const [files, setFiles] = useState(''); // 파일 → 파일은 보안 정책상 초기값을 줄 수 없다고 하여 '' 로 초기화.
+    //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
+    const [fileList, setFileList] = useState([initialFileList]); // 파일 리스트 
+    
     // 값이 onChange 될 때마다 호출되어 setTitle, setContent 에 값을 넣어 제어한다.
     const handleTitle = (e) => {
         setTitle(e.target.value)
@@ -29,30 +34,26 @@ export default function BoardUpdate({location}) {
     const handleFilesChange = (e) => {
         setFiles(e.target.files);
         console.log(e.target.files);
-        setFileImage(URL.createObjectURL(e.target.files[0]));
-        console.log(URL.createObjectURL(e.target.files[0]));
+        //setFileImage(URL.createObjectURL(e.target.files[0]));
+        //console.log(URL.createObjectURL(e.target.files[0]));
     };
+
+    console.log(fileList);
 
     let history = useHistory();
     
-    // 폼 전송 로직
+    // 업데이트 함수
     function onUpdate() {
         // 폼은 Json 형태로 전송하는 것이 일반적이지만,
         // 파일은 Json 형태로 전송할 수 없어 파일 데이터를 포함하게 되면 formData 객체를 사용해야 한다.
         let formData = new FormData();
 
-        // 유효성 검사
-        // function validate(title) {
-        //      if(!title || title.target.value==="") {
-        //          alert('제목을 입력하세요.');
-        //          return false;
-        //      }
-        // }
-
         formData.append("title", title);
         formData.append("contents", contents);
         formData.append("viewYn", viewYn);
         formData.append("files", files[0]);
+        //formData.append("fileId", fileId);
+        //formData.append("fileSeqs", [1]);
 
         axios.post("http://192.168.100.74:18080/homepage/api/notification/update.do?seq=" + seq, formData, {
             headers: {
@@ -63,7 +64,7 @@ export default function BoardUpdate({location}) {
             alert("글이 정상적으로 수정되었습니다.");
             history.push("/");    
        }).catch(function (error) {
-            alert("실패");
+            alert("실패!");
             console.log(error)
        });
     }
@@ -93,8 +94,18 @@ export default function BoardUpdate({location}) {
                     <tr>
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
-                            <input type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
-                            <img alt="" src={fileImage}  style={{width: "100%"}}/>
+                            <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
+                            {/* <img alt="" src={fileImage}  style={{width: "100%"}}/> */}
+                            <div>
+                            { !fileList.length ? "" : 
+                                fileList[0].map((fileList) => (
+                                <div>
+                                    {fileList.originalFileName + ' '}
+                                    <a style={{color:"red", cursor:"pointer"}} onclick="">X</a>
+                                    <br/>
+                                </div>
+                                ))} 
+                            </div>
                         </td>
                     </tr>
                     </tbody>

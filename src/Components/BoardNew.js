@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTitle, setContents, setFiles, setViewYn, setFileImage } from '../action/board';
 import {useHistory} from 'react-router-dom';
 
-function BoardNew() {
+import axios from 'axios';
+
+const BoardNew = () => {
     const [title, setTitle] = useState(''); // 제목
     const [contents, setContents] = useState('');   // 내용
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState('Y');  // 노출 여부 
-    const [fileImage, setFileImage] = useState(""); // 파일 미리보기
-    
-    // 값이 onChange 될 때마다 호출되어 setTitle, setContent 에 값을 넣어 제어한다.
+    //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
+
     const handleTitle = (e) => {
         setTitle(e.target.value)
     }
@@ -24,32 +22,31 @@ function BoardNew() {
     const handleFilesChange = (e) => {
         setFiles(e.target.files);
         console.log(e.target.files);
-        setFileImage(URL.createObjectURL(e.target.files[0]));
-        console.log(URL.createObjectURL(e.target.files[0]));
+        // 파일 이미지 미리보기 우선 생략
+        //setFileImage(URL.createObjectURL(e.target.files[0]));
+        //console.log(URL.createObjectURL(e.target.files[0]));
     };
 
     let history = useHistory();
 
-    console.log(history);
+    console.log(files[0]);
+    console.log(files[1]);
 
-    // 폼 전송 로직
     function onSave() {
         // 폼은 Json 형태로 전송하는 것이 일반적이지만,
         // 파일은 Json 형태로 전송할 수 없어 파일 데이터를 포함하게 되면 formData 객체를 사용해야 한다.
         let formData = new FormData();
 
-        // 유효성 검사
-        // function validate(title) {
-        //      if(!title || title.target.value==="") {
-        //          alert('제목을 입력하세요.');
-        //          return false;
-        //      }
-        // }
-
         formData.append("title", title);
         formData.append("contents", contents);
         formData.append("viewYn", viewYn);
-        formData.append("files", files[0]);
+
+        // 파일 여러 개 폼데이터에 append 하여 전송
+        for (let i = 0; i < files.length; i++) {
+            // key, value or key, value, fileName
+            // 주의사항: key 의 값이 api 의 key 값과 같아야 한다. 
+            formData.append("files", files[i]);
+        }
 
         axios.post("http://192.168.100.74:18080/homepage/api/notification/insert.do", formData, {
             headers: {
@@ -60,12 +57,11 @@ function BoardNew() {
             alert("글이 정상적으로 등록되었습니다.")  
             history.push("/");
        }).catch(function (error) {
-            alert("실패")
+            alert("실패!")
             console.log(error)
        });
     }
 
-    // 렌더링 되는 화면
     return(
         <div id="content" style={{padding:"50px", width: "50%"}}>
             <form>
@@ -91,8 +87,8 @@ function BoardNew() {
                     <tr>
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
-                            <input type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
-                            <img alt="" src={fileImage} style={{width: "100%"}}/>
+                            <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
+                            {/* <img alt="" src={fileImage} style={{width: "100%"}}/> */}
                         </td>
                     </tr>
                     </tbody>
