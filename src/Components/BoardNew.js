@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTitle, setContents, setFiles, setViewYn, setFileImage } from '../action/board';
-import {useHistory} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
+
 
 function BoardNew() {
     const [title, setTitle] = useState(''); // 제목
@@ -10,6 +10,7 @@ function BoardNew() {
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState('Y');  // 노출 여부 
     const [fileImage, setFileImage] = useState(""); // 파일 미리보기
+    const dispatch = useDispatch();
     
     // 값이 onChange 될 때마다 호출되어 setTitle, setContent 에 값을 넣어 제어한다.
     const handleTitle = (e) => {
@@ -28,9 +29,7 @@ function BoardNew() {
         console.log(URL.createObjectURL(e.target.files[0]));
     };
 
-    let history = useHistory();
 
-    console.log(history);
 
     // 폼 전송 로직
     function onSave() {
@@ -55,14 +54,17 @@ function BoardNew() {
             headers: {
               'Content-Type': 'multipart/form-data' // 컨텐츠 타입이 이와 같이 설정되어야 파일 데이터가 넘어간다.
             }
-          })
-        .then(function (response) {
-            alert("글이 정상적으로 등록되었습니다.")  
-            history.push("/");
-       }).catch(function (error) {
-            alert("실패")
-            console.log(error)
-       });
+        }).then(function (response) {
+            // alert("글이 정상적으로 등록되었습니다.");
+            // 성공 메세지 3줄
+            // dispatch(changeMessage("글이 정상적으로 등록되었습니다."));
+            // dispatch(changeMessageCode("0000"));
+            // dispatch(togglePopup(true));
+        }).catch(function (error) {
+            dispatch(changeMessage("글 등록 실패하였습니다."));
+            dispatch(changeMessageCode("0001"));
+            dispatch(togglePopup(true));    
+        });
     }
 
     // 렌더링 되는 화면

@@ -1,7 +1,8 @@
 import React,{useState,useEffect} from 'react';
-import { useSelector} from 'react-redux';
+import { useSelector,useDispatch} from 'react-redux';
 import axios from 'axios';
 import xlsx from 'xlsx';
+import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
 
 const Excel = () =>{
   
@@ -9,17 +10,23 @@ const Excel = () =>{
     const searchKeyword = useSelector(state => state.search.searchKeyword);
     const pageNo = useSelector(state => state.pagination.pageNo);
     const totalCount = useSelector(state => state.list.totalCount);
+    const dispatch = useDispatch();
     const [lists, setLists] = useState([]);
     const headers = ["아이디","노출여부", "제목","내용", "파일아이디",  "등록자", "등록일","수정자", "수정일"];
   
     useEffect(()=>{
         async function fetchDate(){
-            console.log(totalCount+ "totalCount");
             const url = 'http://192.168.100.74:18080/homepage/api/notification/list.do?pageNo='+pageNo+'&pageSize='+totalCount+'&searchType='+searchType+'&searchKeyword='+searchKeyword;
-            console.log(url);
-            const response = await axios.get(url);
-            console.log(response.data.RESULT_DATA.list);
-            setLists(response.data.RESULT_DATA.list);
+            await axios.get(url)
+            .then(res=>{
+                setLists(res.data.RESULT_DATA.list);
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(changeMessage("Excel axios 에러"));
+                dispatch(changeMessageCode("0001"));
+                dispatch(togglePopup(true));
+            });
         }
         fetchDate();
       },[searchType,searchKeyword,totalCount]);
