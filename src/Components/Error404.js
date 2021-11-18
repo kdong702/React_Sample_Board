@@ -1,12 +1,15 @@
-import {useHistory,useLocation} from 'react-router-dom'
+import {useHistory,useLocation} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';;
 
 const Error404 = () =>{
+    var history = useHistory();
+    var location = useLocation();
+    var pathName = location.pathname;
     
-   var history = useHistory();
-
-   const goHome = () =>{
+    const goHome = () =>{
        history.push("/");
-   }
+    }
+
     return (
         <div id="loginWrap">
             <div id="wrap">
@@ -14,7 +17,7 @@ const Error404 = () =>{
                     <div className="error_group">
                         <div className="error_inner">
                             <div className="error_body">
-                                <em>Error Message</em> <span><br />없는 주소입니다. </span>
+                                <em>Error Message</em> <span><br />{pathName !== "/NoList" ? "없는 주소입니다." : "리스트 오류"} </span>
                             </div>
                             <div className="btn_group">
                                 {/* <a  className="btn_pig_pos">로그인으로 이동</a> */}
@@ -26,7 +29,6 @@ const Error404 = () =>{
                 <div id="footer">
                     <span className="copyright">Copyright ⓒ 2021 Lotson. All Rignts Reserved.</span>
                 </div>
-            
             </div>
         </div>
     );

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import {useHistory} from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
 import axios from 'axios';
+import { useHistory } from 'react-router';
 
 const BoardNew = () => {
     const [title, setTitle] = useState(''); // 제목
@@ -9,6 +10,8 @@ const BoardNew = () => {
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState('Y');  // 노출 여부 
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
+
+    const dispatch = useDispatch();
 
     const handleTitle = (e) => {
         setTitle(e.target.value)
@@ -28,9 +31,6 @@ const BoardNew = () => {
     };
 
     let history = useHistory();
-
-    console.log(files[0]);
-    console.log(files[1]);
 
     function onSave() {
         // 폼은 Json 형태로 전송하는 것이 일반적이지만,
@@ -52,14 +52,18 @@ const BoardNew = () => {
             headers: {
               'Content-Type': 'multipart/form-data' // 컨텐츠 타입이 이와 같이 설정되어야 파일 데이터가 넘어간다.
             }
-          })
-        .then(function (response) {
-            alert("글이 정상적으로 등록되었습니다.")  
+        }).then(function (response) {
+            alert("글이 정상적으로 등록되었습니다.");
             history.push("/");
-       }).catch(function (error) {
-            alert("실패!")
-            console.log(error)
-       });
+            // 성공 메세지 3줄
+            // dispatch(changeMessage("글이 정상적으로 등록되었습니다."));
+            // dispatch(changeMessageCode("0000"));
+            // dispatch(togglePopup(true));
+        }).catch(function (error) {
+            dispatch(changeMessage("글 등록 실패하였습니다."));
+            dispatch(changeMessageCode("0001"));
+            dispatch(togglePopup(true));    
+        });
     }
 
     return(

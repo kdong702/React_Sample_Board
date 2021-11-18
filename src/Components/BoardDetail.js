@@ -1,10 +1,9 @@
 import axios from "axios";
-import queryString from "query-string";
 import { useEffect, useState } from "react";
-import { Link, Router, } from "react-router-dom";
-import { setFileImage } from "../action/board";
-import { useSelector,useDispatch} from 'react-redux';
-import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
+import { Link } from "react-router-dom";
+import { useDispatch} from 'react-redux';
+import { togglePopup, changeMessageCode, changeMessage } from '../action/popup';
+import { useHistory } from "react-router";
 
 const BoardDetail = () => {
     // 참고: https://znznzn.tistory.com/64
@@ -18,38 +17,37 @@ const BoardDetail = () => {
     const [fileList, setFileList] = useState([]);
 
     const dispatch = useDispatch();
-    
-    useEffect(()=>{
-            async function showDetail(){
-            const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
-            //console.log(url);
-            const response = await axios.get(url);
-            //console.log(response.data.RESULT_DATA.notice);
-            setDetails(response.data.RESULT_DATA.notice);
-            setFileList(response.data.RESULT_DATA.fileList);
-        }
-        showDetail();
-    },[]);
 
-    console.log(fileList);
-    console.log(details.fileId);
-    for(let i=0; i<fileList.length; i++)
-    {
-    console.log(fileList.fileSeq);
-    }
-    
-    function onRemove(seq) {
-        axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
+    var history = useHistory();
+
+    useEffect(()=>{
+        const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
+        axios.get(url)
         .then(res=>{
-            console.log(seq + "삭제 완료" );
-            dispatch(changeMessage(seq+"번 삭제 완료"));
-            dispatch(changeMessageCode("0000"));
+            setDetails(res.data.RESULT_DATA.notice);
+            setFileList(res.data.RESULT_DATA.fileList);
         })
         .catch(err => {
             console.log(err);
-            dispatch(changeMessage("에러 발생 관리자에게 문의하세요22!!!!"));
-            dispatch(changeMessageCode("0011"));
-        });
+            dispatch(changeMessage("detail 에러 없는 번호입니다"));
+            dispatch(changeMessageCode("0001"));
+            dispatch(togglePopup(true));
+        })
+    },[]);
+    
+    function onRemove(seq) {
+             axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
+            .then(res=>{
+                console.log(seq + "삭제 완료" );
+                dispatch(changeMessage(seq+"번 삭제 완료"));
+                dispatch(changeMessageCode("0000"));
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(changeMessage(seq + "번 삭제 실패"));
+                dispatch(changeMessageCode("0011"));
+            });
+        ;
     }
 
     const clickHandler = () =>{
@@ -59,8 +57,14 @@ const BoardDetail = () => {
             dispatch(togglePopup(true));
             console.log("삭제");
         }else{
+            //else 지워도 됨
             console.log("취소");
         }
+    }
+
+    //목록으로 가기
+    const goList = () => {
+        history.push("/");
     }
 
     return (
@@ -127,7 +131,7 @@ const BoardDetail = () => {
                             <span>수정</span>
                         </a>
                     </Link>
-                    <a className="btn_gray">
+                    <a className="btn_gray" style={{cursor:"pointer"}} onClick={goList}>
                         <span>목록</span>
                     </a>                    
                     <a className="btn_black" style={{cursor:"pointer"}} onClick={clickHandler}>

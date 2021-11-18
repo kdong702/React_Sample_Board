@@ -1,9 +1,10 @@
 import React,{useState,useEffect} from "react";
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from "react-router-dom";
 import {changeBlockSize} from '../action/pagination';
 import {changeTotalCount,createCheckBox,deleteCheckBox} from '../action/list';
-import { Link, Router } from "react-router-dom";
+import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
 
 const Lists= () => {
     const [lists, setLists] = useState([]);
@@ -20,15 +21,24 @@ const Lists= () => {
         async function fetchDate(){
             const url = 'http://192.168.100.74:18080/homepage/api/notification/list.do?pageNo='+pageNo+'&pageSize='+pageSize+'&searchType='+searchType+'&searchKeyword='+searchKeyword;
             console.log(url);
-            const response = await axios.get(url);
-            console.log(response.data.RESULT_DATA.list);
-            setLists(response.data.RESULT_DATA.list);
-            dispatch(changeBlockSize(response.data.RESULT_DATA.search.blockSize));
-            dispatch(changeTotalCount(response.data.RESULT_DATA.search.totalCount));
+            await axios.get(url)
+            .then(res=>{
+                console.log(res.data.RESULT_DATA.list);
+                setLists(res.data.RESULT_DATA.list);
+                dispatch(changeBlockSize(res.data.RESULT_DATA.search.blockSize));
+                dispatch(changeTotalCount(res.data.RESULT_DATA.search.totalCount));
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(changeMessage("리스트 axios 에러"));
+                dispatch(changeMessageCode("1000"));
+                dispatch(togglePopup(true));
+            });
         }
         fetchDate();
       },[pageNo,pageSize,searchType,searchKeyword,totalCount,popupStatus]);
-    //개별체크
+    
+      //개별체크
     const checkHandler = (e) => {
         if(e.target.checked){
             dispatch(createCheckBox(parseInt(e.target.id)));

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import {togglePopup} from '../action/popup';
+import {togglePopup,changeSeq} from '../action/popup';
 import {useHistory,useLocation} from 'react-router-dom'
 
 
@@ -8,22 +8,34 @@ const Popup = () =>{
     const popupStatus = useSelector(state => state.popup.popupStatus);
     const message = useSelector(state => state.popup.message);
     const messageCode = useSelector(state=>state.popup.messageCode);
+    const seq = useSelector(state=>state.popup.seq);
     const dispatch = useDispatch();
 
     //모달창 닫고 Store 내용 가지고 페이지 이동을 위해 
     var history = useHistory();
-    var pathName = useLocation().pathname;
-    console.log(history);
-    console.log(pathName);
-
+    var location = useLocation();
+    var pathName = location.pathname;
+    
     const closeHandler = () =>{
         dispatch(togglePopup(false));
-        if(pathName === "/"){
-            history.push("/");
-            console.log("path / ");
-        }else if(pathName ==="/BoardDetail"){
+        if(pathName === "/" && messageCode==="1000"){ //리스트 에러 발생시
+            window.location.href="/NoList";
+            console.log("path / code1000");
+        }else if(pathName === "/"){ //리스트에서 목록 삭제시
+            history.push("/")
+            console.log("path / action push");
+        }else if(pathName === "/BoardDetail"){ // 디테일에서 글 삭제시 
             history.push("/");
             console.log("Popup.js / closeHandler() / path: boardDetail");
+        }else if(pathName === "/BoardNew"){ // 새로 글 등록시
+            history.push("/");
+            console.log("Popup.js / closeHandler() / path: BoardNew");
+        }else if(pathName === "/BoardUpdate"){ //업데이트 성공 실패시
+            history.push("/BoardDetail?seq=" + seq);
+            dispatch(changeSeq(0));
+        }else {
+            history.push("/");
+            console.log("popup else");
         }
     }
     
@@ -38,8 +50,7 @@ const Popup = () =>{
                     <h1 className="pop_title">{messageCode === "0000" ? "성공": "실패"}</h1> 
                     
                     <div className="pop_contents">
-                        <h1>CODE:{messageCode}</h1>
-                        <h1>{message}</h1>
+                    <h2>{message}</h2>
                         
                         <div className="btn_group">
                             <a className="btn_gray" onClick={closeHandler} ><span>닫기</span></a>
