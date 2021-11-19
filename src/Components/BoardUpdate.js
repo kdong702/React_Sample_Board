@@ -14,7 +14,7 @@ export default function BoardUpdate({location}) {
     // update시 필요. fileId 는 게시글마다 fix 된 상태이기 때문에 그대로 가지고 있어도 됨!
     const seq = location.state.seq;
     const fileId = location.state.fileId;
-
+    console.log(fileId);
     // state 관리
     const [title, setTitle] = useState(initialTitle); // 제목
     const [contents, setContents] = useState(initialContents);   // 내용
@@ -70,6 +70,7 @@ export default function BoardUpdate({location}) {
     
     // 업데이트 함수
     function onUpdate() {
+        console.log(fileId)
         if(!title){
             alert("제목을 입력해 주세요.");
             return;
@@ -92,8 +93,14 @@ export default function BoardUpdate({location}) {
             // 주의사항: key 의 값이 api 의 key 값과 같아야 한다. 
             formData.append("files", files[i]);
         }
-        formData.append("fileId", fileId);
-        formData.append("fileSeqs", fileSeqs);
+        
+        if(fileId!==null){
+            formData.append("fileId", fileId);
+        }
+
+        if(fileSeqs!==[]){
+            formData.append("fileSeqs", fileSeqs);
+        }
 
         axios.post("http://192.168.100.74:18080/homepage/api/notification/update.do?seq=" + seq, formData, {
             headers: {
@@ -156,9 +163,7 @@ export default function BoardUpdate({location}) {
                 </table>
                 <br/>
                 <div style={{marginBottom: "20px"}}>
-                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onChange={handleContent}>
-                        {initialContents}
-                    </textarea>
+                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onChange={handleContent} defaultValue={initialContents}/>
                 </div>
                 <div className="btn_group">
                     <a className="btn_pos" type='button' onClick={onUpdate}>전송</a>

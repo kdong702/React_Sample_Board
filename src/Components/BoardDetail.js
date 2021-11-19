@@ -78,14 +78,14 @@ const BoardDetail = () => {
     };
     //잠금
     const lockHandler = () =>{
-        if(lockedList.includes(seq)){
+        if(lockedList.includes(parseInt(seq))){
             dispatch(deleteLockList(parseInt(seq)));
         }else{
             dispatch(createLockList(parseInt(seq)));
         }
     };
     
-
+    console.log(details.fileId);
     return (
         <div id="content" style={{padding: "50px", width: "50%"}}>
             <form>

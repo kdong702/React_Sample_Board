@@ -3,7 +3,6 @@ import uri from './uri';
 import pagination from "./pagination";
 import search from "./search";
 import list from "./list";
-import board from "./board"
 import popup from './popup';
 
 
@@ -14,7 +13,6 @@ const reducer = combineReducers({
     pagination,
     search,
     list,
-    board,
     popup,
 });
  

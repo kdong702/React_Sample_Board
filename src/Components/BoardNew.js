@@ -33,7 +33,6 @@ const BoardNew = () => {
     let history = useHistory();
 
     function onSave() {
-
         if(!title){
             alert("제목을 입력해 주세요.");
             return;
@@ -90,7 +89,8 @@ const BoardNew = () => {
                     <tbody>
                     <tr>
                         <th scope="row">제목</th>
-                        <td><input type='text' id="title" name="title" title="제목" style={{width: "100%"}} onChange={handleTitle} /></td>
+                        <td><input type='text' id="title" name="title" title="제목" 
+                        style={{width: "100%"}} onChange={handleTitle} /></td>
                         <th scope="row">노출 여부</th>
                         <td>
                             <select name="viewYn" style={{width: "62px"}} className="ui_sel" onChange={handleSelect}>
