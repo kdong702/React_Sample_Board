@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {changePageNo, changePageSize} from '../action/pagination';
+import {changePageNo, changePageSize} from '../../action/pagination';
 
 const Pagination = () => {
     const pageNo = useSelector(state => state.pagination.pageNo);

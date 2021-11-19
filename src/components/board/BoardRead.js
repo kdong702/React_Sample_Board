@@ -2,27 +2,46 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector,useDispatch} from 'react-redux';
-import { togglePopup, changeMessageCode, changeMessage } from '../action/popup';
+import { togglePopup, changeMessageCode, changeMessage } from '../../action/popup';
 import { useHistory } from "react-router";
-import { createLockList, deleteLockList } from "../action/list";
+import { createLockList, deleteLockList } from "../../action/list";
 
-const BoardDetail = () => {
+const BoardRead = () => {
     // 참고: https://znznzn.tistory.com/64
     // seq 가 일단 있어야 detail.do 로 notice, fileList 의 데이터들을 가져올 수 있었음.
     const current = decodeURI(window.location.href);
     const search = current.split("?")[1];
     const params = new URLSearchParams(search);
     const seq = params.get('seq');
-    console.log(typeof seq);
 
     const [details, setDetails] = useState([]);
     const [fileList, setFileList] = useState([]);
     const lockedList = useSelector(state => state.list.lockedList);
-    console.log(lockedList);
 
     const dispatch = useDispatch();
 
     var history = useHistory();
+    
+    useEffect(()=>{
+        if(lockedList.includes(parseInt(seq))){
+            let lockDetail = {"seq":seq,"viewYn":"잠금된 게시물","title":"잠금된 게시물","contents":"잠금된 게시물","fileId":null,"regId":"잠금된 게시물","regDt":"잠금된 게시물","modId":"잠금된 게시물","modDt":"잠금된 게시물"};
+            setFileList([]);
+            setDetails(lockDetail);
+        }else{
+            const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
+            axios.get(url)
+            .then(res=>{
+                setDetails(res.data.RESULT_DATA.notice);
+                setFileList(res.data.RESULT_DATA.fileList);
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(changeMessage("detail 에러 없는 번호입니다"));
+                dispatch(changeMessageCode("0001"));
+                dispatch(togglePopup(true));
+            })
+        }
+    },[lockedList]);
     
     useEffect(()=>{
         if(lockedList.includes(parseInt(seq))){
@@ -164,4 +183,4 @@ const BoardDetail = () => {
     )
 }
 
-export default BoardDetail;
+export default BoardRead;

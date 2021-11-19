@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
+import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 
-const BoardNew = () => {
+const BoardCreate = () => {
     const [title, setTitle] = useState(''); // 제목
     const [contents, setContents] = useState('');   // 내용
     const [files, setFiles] = useState(''); // 파일
@@ -120,4 +120,4 @@ const BoardNew = () => {
     )
 }
  
-export default BoardNew;
+export default BoardCreate;

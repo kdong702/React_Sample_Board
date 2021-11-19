@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import { useSelector,useDispatch} from 'react-redux';
 import axios from 'axios';
 import xlsx from 'xlsx';
-import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
+import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 
 const Excel = () =>{
   
