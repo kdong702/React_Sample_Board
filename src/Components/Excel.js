@@ -37,6 +37,9 @@ const Excel = () =>{
         headers.forEach((x,idx)=>{
             const cellAdd = xlsx.utils.encode_cell({c:idx,r:0});
             ws[cellAdd].v = x;
+            // 엑셀에 숨기고 싶은 정보 있을 경우
+            // ws['!cols'] = [];
+            // ws['!cols'][0] = { hidden: true };
         });
         // 엑셀 북 생성
         var wb = xlsx.utils.book_new();

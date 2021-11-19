@@ -45,6 +45,12 @@ const Csv = () =>{
     //선택한 리스트 출력 바꾸고 싶다면 csvLink data ={lists}로 수정
     var selectedList = [];
     selectedList = lists.filter(list => checkedList.includes(list.seq));
+    console.log(selectedList);
+    
+    //임의의 데이터 삭제후 출력하고 싶을때
+    // for (let index = 0; index < selectedList.length; index++) {
+    //   delete selectedList[index].seq;
+    // }
     
     return(
       <a className="btn_black">
