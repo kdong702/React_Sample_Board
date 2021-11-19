@@ -104,7 +104,7 @@ const BoardRead = () => {
         }
     };
     
-
+    console.log(details.fileId);
     return (
         <div id="content" style={{padding: "50px", width: "50%"}}>
             <form>
