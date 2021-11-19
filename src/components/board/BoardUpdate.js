@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useDispatch} from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage,changeSeq} from '../../action/popup';
+import { updateApi } from "../../api";
 
 export default function BoardUpdate({location}) {
     // 초기값 
@@ -66,6 +67,17 @@ export default function BoardUpdate({location}) {
         e.preventDefault();
     }
 
+    // textarea 글자 수 체크
+    function checkLength(e) {
+        const maxLength = 10;
+
+        if(contents.length > maxLength){
+            alert("글자 수는 " + maxLength + " 자를 초과할 수 없습니다.");
+            e.target.value = contents.substr(0, maxLength);
+            setContents(e.target.value);
+        }
+    }
+
     let history = useHistory();
     
     // 업데이트 함수
@@ -102,7 +114,7 @@ export default function BoardUpdate({location}) {
             formData.append("fileSeqs", fileSeqs);
         }
 
-        axios.post("http://192.168.100.74:18080/homepage/api/notification/update.do?seq=" + seq, formData, {
+        axios.post(updateApi + "?seq=" + seq, formData, {
             headers: {
               'Content-Type': 'multipart/form-data' // 컨텐츠 타입이 이와 같이 설정되어야 파일 데이터가 넘어간다.
             }
@@ -132,7 +144,8 @@ export default function BoardUpdate({location}) {
                     <tbody>
                     <tr>
                         <th scope="row">제목</th>
-                        <td><input type='text' id="title" name="title" title="제목" style={{width: "100%"}} onChange={handleTitle} value={title}/></td>
+                        <td><input type='text' id="title" name="title" title="제목" style={{width: "100%"}} 
+                        maxLength="3" onChange={handleTitle} value={title}/></td>
                         <th scope="row">노출 여부</th>
                         <td>
                             <select name="viewYn" style={{width: "62px"}} className="ui_sel" onChange={handleSelect} defaultValue={initialViewYn}>
@@ -163,7 +176,8 @@ export default function BoardUpdate({location}) {
                 </table>
                 <br/>
                 <div style={{marginBottom: "20px"}}>
-                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onChange={handleContent} defaultValue={initialContents}/>
+                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} 
+                    onKeyUp={(e)=>{checkLength(e)}} onChange={handleContent} defaultValue={initialContents}/>
                 </div>
                 <div className="btn_group">
                     <a className="btn_pos" type='button' onClick={onUpdate}>전송</a>

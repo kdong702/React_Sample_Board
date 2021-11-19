@@ -5,6 +5,7 @@ import { useSelector,useDispatch} from 'react-redux';
 import { togglePopup, changeMessageCode, changeMessage } from '../../action/popup';
 import { useHistory } from "react-router";
 import { createLockList, deleteLockList } from "../../action/list";
+import { detailApi, deleteApi, downloadApi } from "../../api/index";
 
 const BoardRead = () => {
     // 참고: https://znznzn.tistory.com/64
@@ -28,7 +29,7 @@ const BoardRead = () => {
             setFileList([]);
             setDetails(lockDetail);
         }else{
-            const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
+            const url = detailApi + "?seq=" + seq;
             axios.get(url)
             .then(res=>{
                 setDetails(res.data.RESULT_DATA.notice);
@@ -49,7 +50,7 @@ const BoardRead = () => {
             setFileList([]);
             setDetails(lockDetail);
         }else{
-            const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
+            const url = detailApi + "?seq=" + seq;
             axios.get(url)
             .then(res=>{
                 setDetails(res.data.RESULT_DATA.notice);
@@ -65,7 +66,7 @@ const BoardRead = () => {
     },[lockedList]);
 
     function onRemove(seq) {
-             axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
+             axios.post(deleteApi + "?seq=" + seq)
             .then(res=>{
                 console.log(seq + "삭제 완료" );
                 dispatch(changeMessage(seq+"번 삭제 완료"));
@@ -104,7 +105,8 @@ const BoardRead = () => {
         }
     };
     
-    console.log(details.fileId);
+    console.log(fileList);
+
     return (
         <div id="content" style={{padding: "50px", width: "50%"}}>
             <form>
@@ -134,7 +136,7 @@ const BoardRead = () => {
                                 { !fileList.length ? "등록된 이미지가 없습니다." : 
                                 fileList.map((fileList) => (
                                 <div>
-                                    <a href={'http://192.168.100.74:18080/homepage/api/notification/download.do?saveFileName=' + fileList.saveFileName}>
+                                    <a href={downloadApi + '?saveFileName=' + fileList.saveFileName}>
                                         {fileList.originalFileName}
                                     </a>
                                     <img alt="" src=""  style={{width: "100%"}}/>
