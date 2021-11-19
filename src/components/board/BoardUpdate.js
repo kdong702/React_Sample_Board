@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useDispatch} from 'react-redux';
-import {togglePopup,changeMessageCode,changeMessage,changeSeq} from '../action/popup';
+import {togglePopup,changeMessageCode,changeMessage,changeSeq} from '../../action/popup';
 
 export default function BoardUpdate({location}) {
     // 초기값 
@@ -102,7 +102,7 @@ export default function BoardUpdate({location}) {
           })
         .then(function(response) {
             alert("글이 정상적으로 수정되었습니다.");
-            history.push("/BoardDetail?seq=" + seq);    
+            history.push("/BoardRead?seq=" + seq);    
        }).catch(function (error) {
            console.log(error)
            dispatch(changeSeq(seq));

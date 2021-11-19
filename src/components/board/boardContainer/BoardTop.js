@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import {changePageSize} from '../action/pagination';
+import {changePageSize} from '../../../action/pagination';
 
 const BoardTop = () =>{
     const totalCount = useSelector(state => state.list.totalCount);
