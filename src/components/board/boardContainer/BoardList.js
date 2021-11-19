@@ -108,7 +108,7 @@ const Lists= () => {
             </colgroup>
             <thead>
                 <tr>
-                    <th scope="col"><input type="checkbox" onChange={allCheckHandler} checked={lists.every((el)=> checkedList.includes(el.seq))}></input></th>
+                    <th scope="col"><input type="checkbox" onChange={allCheckHandler} checked={lists.every((el)=> checkedList.includes(el.seq)) && lists.length !== 0}></input></th>
                     <th scope="col">NO</th>
                     <th scope="col">제목</th>
                     <th scope="col">내용</th>
