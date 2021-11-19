@@ -14,9 +14,21 @@ const Lists= () => {
     const pageSize = useSelector(state => state.pagination.pageSize);
     const totalCount = useSelector(state => state.list.totalCount);
     const checkedList = useSelector(state => state.list.checkedList);
+    const lockedList = useSelector(state => state.list.lockedList);
     const popupStatus = useSelector(state => state.popup.popupStatus);
     const dispatch = useDispatch();
-   
+
+    function timestamp(){ 
+        function pad(n) { 
+            return n<10 ? "0"+n :""+n; 
+        } 
+        var d=new Date();
+        var format = d.getFullYear()+ pad(d.getMonth()+1)+ pad(d.getDate())+ pad(d.getHours())+ pad(d.getMinutes())+ pad(d.getSeconds()) ; 
+        return format
+    }
+
+    var now = timestamp();
+    
     useEffect(()=>{
         async function fetchDate(){
             const url = 'http://192.168.100.74:18080/homepage/api/notification/list.do?pageNo='+pageNo+'&pageSize='+pageSize+'&searchType='+searchType+'&searchKeyword='+searchKeyword;
@@ -36,7 +48,7 @@ const Lists= () => {
             });
         }
         fetchDate();
-      },[pageNo,pageSize,searchType,searchKeyword,totalCount,popupStatus]);
+      },[pageNo,pageSize,searchType,searchKeyword,totalCount,popupStatus,lockedList]);
     
       //개별체크
     const checkHandler = (e) => {
@@ -73,10 +85,10 @@ const Lists= () => {
         list = lists.map(item=>(
                  <tr className="boardList" key={item.seq}>
                     <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
-                    <td className="first input">{item.seq}</td>
-                    <td><Link to={"/BoardDetail?seq=" + item.seq}>{item.title}</Link> </td>
-                    <td>{item.contents}</td>
-                    <td className="last input">{item.regDt}</td>
+                    <td className="first input">{now-item.regDt < 60*60*24 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}{item.seq}</td>
+                    <td><Link to={"/BoardDetail?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}</Link> </td>
+                    <td>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</td>
+                    <td className="last input">{ lockedList.includes(item.seq) ? "잠금된 게시판" : item.regDt}</td>
                     {item.fileId !== null ?
                         <td className="ellipsis"><i className="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></td> : 
                         <td className="ellipsis">파일X</td>}

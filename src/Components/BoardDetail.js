@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch} from 'react-redux';
+import { useSelector,useDispatch} from 'react-redux';
 import { togglePopup, changeMessageCode, changeMessage } from '../action/popup';
 import { useHistory } from "react-router";
+import { createLockList, deleteLockList } from "../action/list";
 
 const BoardDetail = () => {
     // 참고: https://znznzn.tistory.com/64
@@ -12,30 +13,37 @@ const BoardDetail = () => {
     const search = current.split("?")[1];
     const params = new URLSearchParams(search);
     const seq = params.get('seq');
+    console.log(typeof seq);
 
     const [details, setDetails] = useState([]);
     const [fileList, setFileList] = useState([]);
+    const lockedList = useSelector(state => state.list.lockedList);
+    console.log(lockedList);
 
     const dispatch = useDispatch();
 
     var history = useHistory();
-
+    
     useEffect(()=>{
-        const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
-        axios.get(url)
-        .then(res=>{
-            setFileList(res.data.RESULT_DATA.fileList);
-            setDetails(res.data.RESULT_DATA.notice);
-        })
-        .catch(err => {
-            console.log(err);
-            dispatch(changeMessage("detail 에러 없는 번호입니다"));
-            dispatch(changeMessageCode("0001"));
-            dispatch(togglePopup(true));
-        })
-    },[]);
-
-    console.log(fileList);
+        if(lockedList.includes(parseInt(seq))){
+            let lockDetail = {"seq":seq,"viewYn":"잠금된 게시물","title":"잠금된 게시물","contents":"잠금된 게시물","fileId":null,"regId":"잠금된 게시물","regDt":"잠금된 게시물","modId":"잠금된 게시물","modDt":"잠금된 게시물"};
+            setFileList([]);
+            setDetails(lockDetail);
+        }else{
+            const url = 'http://192.168.100.74:18080/homepage/api/notification/detail.do?seq=' + seq;
+            axios.get(url)
+            .then(res=>{
+                setDetails(res.data.RESULT_DATA.notice);
+                setFileList(res.data.RESULT_DATA.fileList);
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(changeMessage("detail 에러 없는 번호입니다"));
+                dispatch(changeMessageCode("0001"));
+                dispatch(togglePopup(true));
+            })
+        }
+    },[lockedList]);
 
     function onRemove(seq) {
              axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
@@ -50,7 +58,7 @@ const BoardDetail = () => {
                 dispatch(changeMessageCode("0011"));
             });
         ;
-    }
+    };
 
     const clickHandler = () =>{
         if(window.confirm(details.seq + "번 삭제하시겠습니까?")){
@@ -62,12 +70,21 @@ const BoardDetail = () => {
             //else 지워도 됨
             console.log("취소");
         }
-    }
+    };
 
     //목록으로 가기
     const goList = () => {
         history.push("/");
-    }
+    };
+    //잠금
+    const lockHandler = () =>{
+        if(lockedList.includes(seq)){
+            dispatch(deleteLockList(parseInt(seq)));
+        }else{
+            dispatch(createLockList(parseInt(seq)));
+        }
+    };
+    
 
     return (
         <div id="content" style={{padding: "50px", width: "50%"}}>
@@ -136,6 +153,9 @@ const BoardDetail = () => {
                     </a>                    
                     <a className="btn_black" style={{cursor:"pointer"}} onClick={clickHandler}>
                         <span>삭제</span>
+                    </a>
+                    <a className="btn_gray" style={{cursor:"pointer"}} onClick={lockHandler}>
+                        <span>{lockedList.includes(parseInt(seq))? "잠금해제" : "잠금"}</span>
                     </a>
                     
                 </div>
