@@ -44,7 +44,7 @@ const BoardDetail = () => {
             })
         }
     },[lockedList]);
-    
+
     function onRemove(seq) {
              axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
             .then(res=>{
@@ -141,8 +141,6 @@ const BoardDetail = () => {
                             contents: details.contents,
                             seq : seq,
                             fileId: details.fileId,
-                            //saveFileName: fileList.saveFileName,
-                            //originalFileName: fileList.originalFileName
                             fileList: fileList
                         }
                     }}>

@@ -70,6 +70,16 @@ export default function BoardUpdate({location}) {
     
     // 업데이트 함수
     function onUpdate() {
+        if(!title){
+            alert("제목을 입력해 주세요.");
+            return;
+        }
+
+        if(!contents){
+            alert("내용을 입력해 주세요.");
+            return;
+        }
+
         // 폼은 Json 형태로 전송하는 것이 일반적이지만,
         // 파일은 Json 형태로 전송할 수 없어 파일 데이터를 포함하게 되면 formData 객체를 사용해야 한다.
         let formData = new FormData();
