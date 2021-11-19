@@ -48,10 +48,8 @@ const Popup = () =>{
             <div className="user_layout popup_layer" style={{width:"500px"}}>
                 <div className="pop_container">
                     <h1 className="pop_title">{messageCode === "0000" ? "성공": "실패"}</h1> 
-                    
                     <div className="pop_contents">
                     <h2>{message}</h2>
-                        
                         <div className="btn_group">
                             <a className="btn_gray" onClick={closeHandler} ><span>닫기</span></a>
                         </div>

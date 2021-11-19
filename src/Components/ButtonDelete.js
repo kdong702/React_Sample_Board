@@ -26,8 +26,10 @@ const ButtonDelete = () =>{
                 count++;
             })
             .catch(err => {
-                msg += list[i]+"번  ";
                 console.log(err);
+                dispatch(changeMessage("삭제 axios 오류!"));
+                dispatch(changeMessageCode("0001"));
+                dispatch(togglePopup(true));
             });
              
         };
@@ -35,9 +37,9 @@ const ButtonDelete = () =>{
             dispatch(changeMessage(list.length+"건 삭제 완료"));
             dispatch(changeMessageCode("0000"));
             dispatch(togglePopup(true));
-        }else{
-            dispatch(changeMessage(msg+"삭제 이미 되었다 axios 오류!"));
-            dispatch(changeMessageCode("0001"));
+        }else if(count === list.length && code !== 0){
+            dispatch(changeMessage(msg+" 이미 삭제 되어있었고, 나머지 삭제 성공"));
+            dispatch(changeMessageCode("0000"));
             dispatch(togglePopup(true));
         }
         dispatch(resetCheckBox());
