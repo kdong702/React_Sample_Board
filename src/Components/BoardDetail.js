@@ -35,13 +35,7 @@ const BoardDetail = () => {
         })
     },[]);
 
-    //console.log(details);
     console.log(fileList);
-    //console.log(fileList[0]);
-    // if(fileList.length){
-    //     console.log(fileList[0].fileSeq);
-    // }
-    //console.log(fileList[0].fileId);
 
     function onRemove(seq) {
              axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ seq)
@@ -130,8 +124,6 @@ const BoardDetail = () => {
                             contents: details.contents,
                             seq : seq,
                             fileId: details.fileId,
-                            //saveFileName: fileList.saveFileName,
-                            //originalFileName: fileList.originalFileName
                             fileList: fileList
                         }
                     }}>
