@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {changeSearchType,changeSearchKeyword,changeInput} from '../action/search';
+import {changeSearchType,changeSearchKeyword,changeInput} from '../../../action/search';
 
 const Search = ()=>{
     const searchType = useSelector(state => state.search.searchType);
+    const searchKeyword = useSelector(state => state.search.searchKeyword);
     const dispatch = useDispatch();
     
-    // s search2
+    /* s search2
     const [type2, setType2] = useState('title');
     const [keyword2, setKeyword2] = useState('');
     
@@ -25,13 +26,13 @@ const Search = ()=>{
         setType2(type);
     }
 
-    // e search2
+     e search2*/
     //검색어 바뀔시
     const changeHandler = (e) => {
         dispatch(changeInput(e.target.value));
-        keyword = e.target.value; //search2
-        console.log(keyword); //search2
-        setKeyword2(keyword); //search2
+        // keyword = e.target.value; //search2
+        // console.log(keyword); //search2
+        // setKeyword2(keyword); //search2
     }
     
     const submitHandler = (e) =>{
@@ -40,10 +41,6 @@ const Search = ()=>{
         dispatch(changeSearchKeyword(e.target.searchKeyword.value));
     }
 
-    
-
-    
-          
     var selected = searchType == null ? "" : searchType;
 
     return(
@@ -60,14 +57,14 @@ const Search = ()=>{
                                 <tbody>
                                     <tr>
                                         <th>
-                                            <select name="selectList" id="selectList" className="ui_sel" style={{width: "100px"}} defaultValue={selected} onChange={selectHandler} >
+                                            <select name="selectList" id="selectList" className="ui_sel" style={{width: "100px"}} defaultValue={selected}  >
                                                     <option value="title" >제목</option>
                                                     <option value="contents" >내용</option>
                                                     <option value="all">제목+내용</option>
                                             </select>
                                         </th>
                                         <td className="input">
-                                            <input type="text" name="searchKeyword" id="searchKeyword"  style={{width: "100%"}} onChange={changeHandler} />
+                                            <input type="text" name="searchKeyword" id="searchKeyword"  style={{width: "100%"}} defaultValue={searchKeyword} />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -77,9 +74,9 @@ const Search = ()=>{
                 </div>
                 
                 <div className="colgroup btn" style={{width: "12%"}}>
-                     <span className="bar">|</span>
+                     {/* <span className="bar">|</span>
                     <a  className="btn_black" onClick={searchHandler} style={{cursor:"pointer"}}><span>검색2</span></a> 
-                    <span className="barr">|</span> 
+                    <span className="barr">|</span>  */}
                       <button type="submit" className="btn_black" style={{color:"white"}}>검색</button> 
                 </div>
                 

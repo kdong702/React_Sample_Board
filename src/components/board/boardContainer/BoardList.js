@@ -2,9 +2,9 @@ import React,{useState,useEffect} from "react";
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
-import {changeBlockSize} from '../action/pagination';
-import {changeTotalCount,createCheckBox,deleteCheckBox} from '../action/list';
-import {togglePopup,changeMessageCode,changeMessage} from '../action/popup';
+import {changeBlockSize} from '../../../action/pagination';
+import {changeTotalCount,createCheckBox,deleteCheckBox} from '../../../action/list';
+import {togglePopup,changeMessageCode,changeMessage} from '../../../action/popup';
 
 const Lists= () => {
     const [lists, setLists] = useState([]);
@@ -86,7 +86,7 @@ const Lists= () => {
                  <tr className="boardList" key={item.seq}>
                     <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
                     <td className="first input">{now-item.regDt < 60*60*24 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}{item.seq}</td>
-                    <td><Link to={"/BoardDetail?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}</Link> </td>
+                    <td><Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}</Link> </td>
                     <td>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</td>
                     <td className="last input">{ lockedList.includes(item.seq) ? "잠금된 게시판" : item.regDt}</td>
                     {item.fileId !== null ?
