@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import { useHistory } from 'react-router';
-import { insertApi, postAxiosFromApi } from '../../api';
+import { fileListApi, insertApi, postAxiosFromApi } from '../../api';
 import Button from '../common/Button';
 
 const BoardCreate = () => {
@@ -11,6 +11,7 @@ const BoardCreate = () => {
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState('Y');  // 노출 여부 
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
+    const [multiFileName, setMultiFileName] = useState('');
 
     const dispatch = useDispatch();
 
@@ -24,11 +25,24 @@ const BoardCreate = () => {
         setViewYn(e.target.value);
     };
     const handleFilesChange = (e) => {
+        setMultiFileName('');
         setFiles(e.target.files);
-        for(let i=0; i<files.length; i++){
-        
+    
+        let str = '';
+
+        // files 배열의 길이가 1보다 크다면(즉, 멀티 파일이라면)
+        if(e.target.files.length > 1)
+        {
+            for(let i=0; i<(e.target.files.length); i++) {
+                str += (e.target.files[i].name);
+                if(i != (e.target.files.length)-1) {
+                    str += "\n"
+                }       
+            }
+
+            setMultiFileName(str);
         }
-        console.log(e.target.files);
+
         // 파일 이미지 미리보기 우선 생략
         //setFileImage(URL.createObjectURL(e.target.files[0]));
         //console.log(URL.createObjectURL(e.target.files[0]));
@@ -123,7 +137,10 @@ const BoardCreate = () => {
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
                             <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
-                            <div id="showFile"/>
+                            <div>{multiFileName.split("\n").map(multiFileName => {
+                                return (<span>{multiFileName}<br/></span>)
+                            })}</div>
+                            {/* <div>{multiFileName}</div> */}
                             {/* <img alt="" src={fileImage} style={{width: "100%"}}/> */}
                         </td>
                     </tr>
