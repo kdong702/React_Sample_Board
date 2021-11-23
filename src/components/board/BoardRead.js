@@ -65,14 +65,22 @@ const BoardRead = () => {
                 dispatch(togglePopup(true));
             })
         }
+        
     },[lockedList]);
 
     //글 작성시간 YYYY년 MM월 DD일 HH:mm:ss
     const format = (day) => {
-         var formatDay =  day.substring(0,4) + "년 " + day.substring(4,6) + "월 " + day.substring(6,8) + "일 " + day.substring(8,10)+ ":" + day.substring(10,12) + ":" +day.substring(12,14);
-         return formatDay
+        var formatDay = "";
+        
+        if(day !== undefined){
+             formatDay =  day.substring(0,4) + "년 " + day.substring(4,6) + "월 " + day.substring(6,8) + "일 " + day.substring(8,10)+ ":" + day.substring(10,12) + ":" +day.substring(12,14);
+        }else{
+             formatDay = day;
+        }
+        
+        return formatDay
     }
-
+    console.log(details);
     // S 삭제
     const delSuccessAxios = (res) =>{
         console.log(seq + "삭제 완료" );
@@ -120,6 +128,7 @@ const BoardRead = () => {
     console.log(fileList);
 
     return (
+        
         <div id="content" style={{padding: "50px", width: "50%"}}>
             <form>
                 <table className="dtbl_row">
@@ -140,7 +149,7 @@ const BoardRead = () => {
                         <th scope="row">작성자</th>
                             <td>{details.regId}</td>
                             <th scope="row">작성일</th>
-                            <td>{details.regDt}</td>
+                            <td>{format(details.regDt)}</td>
                         </tr>
                         <tr>
                             <th scope="row" style={{height: "100%"}}>첨부 이미지</th>
