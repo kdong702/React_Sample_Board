@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import { useHistory } from 'react-router';
 import { insertApi, postAxiosFromApi } from '../../api';
+import Button from '../common/Button';
 
 const BoardCreate = () => {
     const [title, setTitle] = useState(''); // 제목
@@ -10,6 +11,7 @@ const BoardCreate = () => {
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState('Y');  // 노출 여부 
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
+    const [multiFileName, setMultiFileName] = useState(''); // 멀티 파일 이름 집합
 
     const dispatch = useDispatch();
 
@@ -23,11 +25,24 @@ const BoardCreate = () => {
         setViewYn(e.target.value);
     };
     const handleFilesChange = (e) => {
+        setMultiFileName('');
         setFiles(e.target.files);
-        for(let i=0; i<files.length; i++){
-        
+    
+        let str = '';
+
+        // files 배열의 길이가 1보다 크다면(즉, 멀티 파일이라면)
+        if(e.target.files.length > 1)
+        {
+            for(let i=0; i<(e.target.files.length); i++) {
+                str += (e.target.files[i].name);
+                if(i != (e.target.files.length)-1) {
+                    str += "\n"
+                }       
+            }
+
+            setMultiFileName(str);
         }
-        console.log(e.target.files);
+
         // 파일 이미지 미리보기 우선 생략
         //setFileImage(URL.createObjectURL(e.target.files[0]));
         //console.log(URL.createObjectURL(e.target.files[0]));
@@ -86,6 +101,15 @@ const BoardCreate = () => {
         postAxiosFromApi(insertApi, formData, succFunc, failFunc);
     }
 
+    function onCancle() {
+        if(window.confirm("글 작성을 취소하시겠습니까?")) {
+            history.push("/");
+        }
+        else {
+            return;
+        }
+    }
+
     return(
         <div id="content" style={{padding:"50px", width: "50%"}}>
             <form>
@@ -113,7 +137,10 @@ const BoardCreate = () => {
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
                             <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
-                            <div id="showFile"/>
+                            <div>{multiFileName.split("\n").map(multiFileName => {
+                                return (<span>{multiFileName}<br/></span>)
+                            })}</div>
+                            {/* <div>{multiFileName}</div> */}
                             {/* <img alt="" src={fileImage} style={{width: "100%"}}/> */}
                         </td>
                     </tr>
@@ -125,7 +152,8 @@ const BoardCreate = () => {
                     onChange={handleContent}/>
                 </div>
                 <div className="btn_group">
-                    <a className="btn_pos" type='button' onClick={onSave}>전송</a>
+                    <Button title="전송" cName="btn_pos" event = {onSave}/>
+                    <Button title="취소" cName="btn_black" event = {onCancle}/>
                 </div>
         </form>
     </div>

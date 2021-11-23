@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch} from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage,changeSeq} from '../../action/popup';
 import { updateApi, postAxiosFromApi } from "../../api";
+import Button from '../common/Button';
 
 export default function BoardUpdate({location}) {
     // 초기값 
@@ -22,7 +23,8 @@ export default function BoardUpdate({location}) {
     const [files, setFiles] = useState(''); // 파일 → 파일은 보안 정책상 초기값을 줄 수 없다고 하여 '' 로 초기화.
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
     const [fileList, setFileList] = useState(initialFileList); // 파일 리스트
-    const [fileSeqs, setFileSeqs] = useState([]); // 파일 seq!!!
+    const [fileSeqs, setFileSeqs] = useState([]); // 파일 seq
+    const [multiFileName, setMultiFileName] = useState(''); // 멀티 파일 이름 집합
 
     // 첫 렌더링 때 seq 세팅
     useEffect(() => {
@@ -49,8 +51,23 @@ export default function BoardUpdate({location}) {
         setViewYn(e.target.value);
     };
     const handleFilesChange = (e) => {
+        setMultiFileName('');
         setFiles(e.target.files);
-        console.log(e.target.files);
+    
+        let str = '';
+
+        // files 배열의 길이가 1보다 크다면(즉, 멀티 파일이라면)
+        if(e.target.files.length > 1)
+        {
+            for(let i=0; i<(e.target.files.length); i++) {
+                str += (e.target.files[i].name);
+                if(i != (e.target.files.length)-1) {
+                    str += "\n"
+                }       
+            }
+
+            setMultiFileName(str);
+        }
         //setFileImage(URL.createObjectURL(e.target.files[0]));
         //console.log(URL.createObjectURL(e.target.files[0]));
     };
@@ -128,6 +145,15 @@ export default function BoardUpdate({location}) {
         postAxiosFromApi(updateApi + "?seq=" + seq, formData, succFunc, failFunc);
     }
 
+    function onCancle() {
+        if(window.confirm("글 수정을 취소하시겠습니까?")) {
+            history.push("/");
+        }
+        else {
+            return;
+        }
+    }
+
     return(
         <div id="content" style={{padding:"50px", width: "50%"}}>
             <form>
@@ -155,6 +181,9 @@ export default function BoardUpdate({location}) {
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
                             <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
+                            <div>{multiFileName.split("\n").map(multiFileName => {
+                                return (<span>{multiFileName}<br/></span>)
+                            })}</div>
                             {/* <img alt="" src={fileImage}  style={{width: "100%"}}/> */}
                             <div>
                             { !fileList.length ? "" : 
@@ -177,7 +206,8 @@ export default function BoardUpdate({location}) {
                     onKeyUp={(e)=>{checkLength(e)}} onChange={handleContent} defaultValue={initialContents}/>
                 </div>
                 <div className="btn_group">
-                    <a className="btn_pos" type='button' onClick={onUpdate}>전송</a>
+                    <Button title="전송" cName="btn_pos" event = {onUpdate}/>
+                    <Button title="취소" cName="btn_black" event = {onCancle}/>
                 </div>
         </form>
     </div>
