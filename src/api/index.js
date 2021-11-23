@@ -13,7 +13,7 @@ const getAxiosFromApi = (ApiUrl,formData,succFunc,failFunc) => {
 }
 
 const postAxiosFromApi = (ApiUrl,formData,succFunc,failFunc) => {
-    return axios.post(ApiUrl,formData).then(res=> succFunc(res)).catch(err => failFunc(err));
+    return axios.post(ApiUrl,formData,{ headers: {  'Content-Type': 'multipart/form-data'}}).then(res=> succFunc(res)).catch(err => failFunc(err));
 }
 
 export {listApi, detailApi, fileListApi, downloadApi, insertApi, updateApi, deleteApi, getAxiosFromApi, postAxiosFromApi};

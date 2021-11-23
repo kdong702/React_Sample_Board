@@ -72,7 +72,7 @@ function BoardBtn() {
             }
             console.log("삭제");
         }else{
-            console.log("취소");
+            alert("취소하였습니다.");
         }
     }
 
