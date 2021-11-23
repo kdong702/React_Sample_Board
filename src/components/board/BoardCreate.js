@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import axios from 'axios';
 import { useHistory } from 'react-router';
-import { insertApi } from '../../api';
+import { insertTest } from '../../api';
 
 const BoardCreate = () => {
     const [title, setTitle] = useState(''); // 제목
@@ -70,22 +70,30 @@ const BoardCreate = () => {
             formData.append("files", files[i]);
         }
 
-        axios.post(insertApi, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data' // 컨텐츠 타입이 이와 같이 설정되어야 파일 데이터가 넘어간다.
-            }
-        }).then(function (response) {
-            alert("글이 정상적으로 등록되었습니다.");
+        // axios.post(insertApi, formData, {
+        //     headers: {
+        //       'Content-Type': 'multipart/form-data' // 컨텐츠 타입이 이와 같이 설정되어야 파일 데이터가 넘어간다.
+        //     }
+        // }).then(function (response) {
+        //     alert("글이 정상적으로 등록되었습니다.");
+        //     history.push("/");
+        //     // 성공 메세지 3줄
+        //     // dispatch(changeMessage("글이 정상적으로 등록되었습니다."));
+        //     // dispatch(changeMessageCode("0000"));
+        //     // dispatch(togglePopup(true));
+        // }).catch(function (error) {
+        //     dispatch(changeMessage("글 등록 실패하였습니다."));
+        //     dispatch(changeMessageCode("0001"));
+        //     dispatch(togglePopup(true));    
+        // });
+
+        function test() {
             history.push("/");
-            // 성공 메세지 3줄
-            // dispatch(changeMessage("글이 정상적으로 등록되었습니다."));
-            // dispatch(changeMessageCode("0000"));
-            // dispatch(togglePopup(true));
-        }).catch(function (error) {
-            dispatch(changeMessage("글 등록 실패하였습니다."));
-            dispatch(changeMessageCode("0001"));
-            dispatch(togglePopup(true));    
-        });
+            alert("정상 등록")
+        }
+
+        insertTest(formData, test);
+
     }
 
     return(
