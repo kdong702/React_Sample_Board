@@ -400,4 +400,5 @@ table.dtbl_col tbody tr:hover th { background-color:#fbf3f6; }
 
 /* e:기본 table ************************************************************************************************/		
 
-
+/* 20211123 추가 동현 */
+.wrap { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}

@@ -145,7 +145,7 @@ export default function BoardUpdate({location}) {
                     <tr>
                         <th scope="row">제목</th>
                         <td><input type='text' id="title" name="title" title="제목" style={{width: "100%"}} 
-                        maxLength="3" onChange={handleTitle} value={title}/></td>
+                        maxLength="20" onChange={handleTitle} value={title}/></td>
                         <th scope="row">노출 여부</th>
                         <td>
                             <select name="viewYn" style={{width: "62px"}} className="ui_sel" onChange={handleSelect} defaultValue={initialViewYn}>

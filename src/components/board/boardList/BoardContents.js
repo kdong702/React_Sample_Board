@@ -17,8 +17,8 @@ const BoardContents= () => {
     const lockedList = useSelector(state => state.list.lockedList);
     const popupStatus = useSelector(state => state.popup.popupStatus);
     const dispatch = useDispatch();
-    var history = useHistory();
 
+    //현재시간을 기준으로 new 생성하기 위해
     function timestamp(){ 
         function pad(n) { 
             return n<10 ? "0"+n :""+n; 
@@ -30,7 +30,12 @@ const BoardContents= () => {
 
     var now = timestamp();
     
-    
+    //글 작성시간 YYYY년 MM월 DD일 HH:mm:ss
+    const format = (day) => {
+        var formatDay =  day.substring(0,4) + "년 " + day.substring(4,6) + "월 " + day.substring(6,8) + "일 " + day.substring(8,10)+ ":" + day.substring(10,12) + ":" +day.substring(12,14);
+        return formatDay
+    }
+
     const successAxios = (res) =>{
         console.log(encodeURIComponent(";,/?:@&=+$ test"));
         console.log(encodeURIComponent(";,/?:@&=+$ "));
@@ -60,7 +65,7 @@ const BoardContents= () => {
         fetchDate();
     },[pageNo,pageSize,searchType,searchKeyword,totalCount,popupStatus,lockedList]);
     
-      //개별체크
+    //개별체크
     const checkHandler = (e) => {
         if(e.target.checked){
             dispatch(createCheckBox(parseInt(e.target.id)));
@@ -68,6 +73,7 @@ const BoardContents= () => {
             dispatch(deleteCheckBox(parseInt(e.target.id)));
         }
     };
+
     //전체 체크
     const allCheckHandler = (e) => {
         if(e.target.checked){
@@ -95,17 +101,13 @@ const BoardContents= () => {
         list = lists.map(item=>(
             <tr className="boardList" key={item.seq}>
             <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
+            
             <td className="first input">
-                <Link to={"/BoardRead?seq=" + item.seq}>
-                    {now-item.regDt < 60*60*24 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}{item.seq}
-                </Link>
-            </td>
-            <td>
-                <Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}
+            {now-item.regDt < 60*60*24 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}<Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}
                 </Link> 
             </td>
-            <td><Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</Link></td>
-            <td className="last input"><Link to={"/BoardRead?seq=" + item.seq}>{ lockedList.includes(item.seq) ? "잠금된 게시판" : item.regDt}</Link></td>
+            <td className="wrap"><Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</Link></td>
+            <td className="last input"><Link to={"/BoardRead?seq=" + item.seq}>{ lockedList.includes(item.seq) ? "잠금된 게시판" : format(item.regDt)}</Link></td>
             {item.fileId !== null ?
                 <td className="ellipsis"><Link to={"/BoardRead?seq=" + item.seq}><i className="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></Link></td> : 
                 <td className="ellipsis">파일X</td>}
@@ -117,16 +119,14 @@ const BoardContents= () => {
         <table className="dtbl_col" cellSpacing="0" cellPadding="0" summary="">
             <colgroup>
                 <col style={{width: "5%"}} />
-                <col style={{width: "10%"}} />
                 <col style={{width: "35%"}} />
-                <col style={{width: "25%"}} />
+                <col style={{width: "35%"}} />
                 <col style={{width: "20%"}} />
                 <col style={{width: "5%"}} />
             </colgroup>
             <thead>
                 <tr>
                     <th scope="col"><input type="checkbox" onChange={allCheckHandler} checked={lists.every((el)=> checkedList.includes(el.seq)) && lists.length !== 0}></input></th>
-                    <th scope="col">NO</th>
                     <th scope="col">제목</th>
                     <th scope="col">내용</th>
                     <th scope="col">등록일</th>
