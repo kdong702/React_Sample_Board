@@ -71,19 +71,15 @@ const BoardRead = () => {
     //글 작성시간 YYYY년 MM월 DD일 HH:mm:ss
     const format = (day) => {
         var formatDay = "";
-        
         if(day !== undefined){
              formatDay =  day.substring(0,4) + "년 " + day.substring(4,6) + "월 " + day.substring(6,8) + "일 " + day.substring(8,10)+ ":" + day.substring(10,12) + ":" +day.substring(12,14);
         }else{
              formatDay = day;
         }
-        
         return formatDay
     }
-    console.log(details);
     // S 삭제
     const delSuccessAxios = (res) =>{
-        console.log(seq + "삭제 완료" );
         dispatch(changeMessage(seq+"번 삭제 완료"));
         dispatch(changeMessageCode("0000"));
     }
@@ -102,7 +98,6 @@ const BoardRead = () => {
 
     const clickHandler = () =>{
         if(window.confirm("삭제하시겠습니까?")){
-            console.log("삭제");
             onRemove(details.seq);
             dispatch(togglePopup(true));
         }else{
@@ -125,10 +120,7 @@ const BoardRead = () => {
         }
     };
     
-    console.log(fileList);
-
     return (
-        
         <div id="content" style={{padding: "50px", width: "50%"}}>
             <form>
                 <table className="dtbl_row">
