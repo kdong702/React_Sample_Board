@@ -1,5 +1,5 @@
 import React from 'react';
-import BoardList from './BoardList';
+import BoardContents from './BoardContents';
 import Pagination from '../../common/Pagination';
 import BoardSearch from './BoardSearch';
 import BoardBtn from './BoardBtn';
@@ -10,7 +10,7 @@ function index() {
         <div id="content" style={{padding:50}}>
             <BoardSearch/>
             <BoardTop/>
-            <BoardList/>
+            <BoardContents/>
             <BoardBtn/>
             <Pagination/>
         </div>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import axios from 'axios';
 import xlsx from 'xlsx';
 import { Link } from 'react-router-dom';
 import { CSVLink } from 'react-csv';
+import { listApi,getAxiosFromApi,deleteApi,postAxiosFromApi } from '../../../api';
  
 import Button from '../../common/Button';
 
@@ -32,45 +32,35 @@ function BoardBtn() {
         {label: "등록일", key: "regDt"},
         {label: "수정자", key: "modId"},
         {label: "수정일", key: "modDt"},
-      ];
-
-    //S 삭제 버튼 기능
-    async function onRemove(list) {
-        let count = 0;
-        let msg = '';
-        let code = 0;
-        for (let i = 0; i < list.length; i++) {
-            await axios.post("http://192.168.100.74:18080/homepage/api/notification/delete.do?seq="+ list[i])
-            .then(res=>{
-                console.log(res);
-                //없는 번호 지울때 성공이지만,RESULT_CODE 9999로 빠진다
-                code += parseInt(res.data.RESULT_CODE);
-                if(res.data.RESULT_CODE !=="0000"){
-                    msg += list[i]+"번  ";
-                }
-                console.log(list[i] + "삭제 완료" );
-                count++;
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch(changeMessage("삭제 axios 오류!"));
-                dispatch(changeMessageCode("0001"));
-                dispatch(togglePopup(true));
-            });
-             
-        };
-        if(count === list.length && code === 0){
-            dispatch(changeMessage(list.length+"건 삭제 완료"));
-            dispatch(changeMessageCode("0000"));
-            dispatch(togglePopup(true));
-        }else if(count === list.length && code !== 0){
-            dispatch(changeMessage(msg+" 이미 삭제 되어있었고, 나머지 삭제 성공"));
+    ];
+    
+    var count = 0;
+    //없는 번호 지울때 성공이지만,RESULT_CODE 9999로 빠진다
+    const delSuccessAxios = (res) =>{
+        count++;
+        if(count === checkedList.length){
+            dispatch(changeMessage(checkedList.length+"건 삭제 완료"));
             dispatch(changeMessageCode("0000"));
             dispatch(togglePopup(true));
         }
-        dispatch(resetCheckBox());
+    }
+    const delFailAxios = (err) =>{
+        console.log(err);
+        dispatch(changeMessage("삭제 axios 오류!"));
+        dispatch(changeMessageCode("0001"));
+        dispatch(togglePopup(true));
     }
     
+    //S 삭제 버튼 기능
+    async function onRemove(list) {
+        for (let i = 0; i < list.length; i++) {
+            let formData = new FormData();
+            formData.append("seq", list[i]);
+            await postAxiosFromApi(deleteApi,formData,delSuccessAxios,delFailAxios);
+        };
+        dispatch(resetCheckBox());
+    }
+
     //삭제 버튼 클릭시
     const delEvent = () =>{
         if(window.confirm(checkedList.length + "건 삭제하시겠습니까?")){
@@ -86,36 +76,41 @@ function BoardBtn() {
         }
     }
 
-     //E 삭제 버튼 기능
+    //E 삭제 버튼 기능
 
     //S excel, csv 리스트 가져오는 작업
+    const listSuccessAxios = (res) =>{
+        setLists(res.data.RESULT_DATA.list);
+    }
+    
+    const listFailAxios = (err) =>{
+        console.log(err);
+        dispatch(changeMessage("Excel Csv axios 에러"));
+        dispatch(changeMessageCode("0001"));
+        dispatch(togglePopup(true));
+    }
     useEffect(()=>{
+        const params = {
+            pageNo:pageNo,
+            pageSize:totalCount,
+            searchType:searchType,
+            searchKeyword:searchKeyword
+        }
         async function fetchDate(){
-            const url = 'http://192.168.100.74:18080/homepage/api/notification/list.do?pageNo='+pageNo+'&pageSize='+totalCount+'&searchType='+searchType+'&searchKeyword='+searchKeyword;
-            await axios.get(url)
-            .then(res=>{
-                setLists(res.data.RESULT_DATA.list);
-                console.log("################################");
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch(changeMessage("Excel Csv axios 에러"));
-                dispatch(changeMessageCode("0001"));
-                dispatch(togglePopup(true));
-            });
+            await getAxiosFromApi(listApi,params,listSuccessAxios,listFailAxios);
         }
         fetchDate();
-      },[searchType,searchKeyword,totalCount,checkedList]);
+    },[searchType,searchKeyword,totalCount,checkedList]);
       
     //선택한 리스트 출력 바꾸고 싶다면 csvLink data ={lists}로 수정
-        var selectedList = [];
-        selectedList = lists.filter(list => checkedList.includes(list.seq));
+    var selectedList = [];
+    selectedList = lists.filter(list => checkedList.includes(list.seq));
 
     //  임의의 데이터 삭제후 출력하고 싶을때
-        for (let index = 0; index < selectedList.length; index++) {
-            delete selectedList[index].seq;
-        }
-    
+    for (let index = 0; index < selectedList.length; index++) {
+        delete selectedList[index].seq;
+    }
+
     // 엑셀 만드는 작업
     const excelEvent = () =>{
         var ws = xlsx.utils.json_to_sheet(lists);

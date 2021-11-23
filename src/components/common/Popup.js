@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {togglePopup,changeSeq} from '../../action/popup';
-import {useHistory,useLocation} from 'react-router-dom'
+import {useHistory,useLocation} from 'react-router-dom';
 
 
 const Popup = () =>{

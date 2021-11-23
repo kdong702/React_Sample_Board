@@ -5,7 +5,7 @@ import { useSelector,useDispatch} from 'react-redux';
 import { togglePopup, changeMessageCode, changeMessage } from '../../action/popup';
 import { useHistory } from "react-router";
 import { createLockList, deleteLockList } from "../../action/list";
-import { detailApi, deleteApi, downloadApi } from "../../api/index";
+import { detailApi, deleteApi, downloadApi,postAxiosFromApi } from "../../api/index";
 
 const BoardRead = () => {
     // 참고: https://znznzn.tistory.com/64
@@ -45,6 +45,7 @@ const BoardRead = () => {
     },[lockedList]);
     
     useEffect(()=>{
+        //잠긴 게시물의 경우
         if(lockedList.includes(parseInt(seq))){
             let lockDetail = {"seq":seq,"viewYn":"잠금된 게시물","title":"잠금된 게시물","contents":"잠금된 게시물","fileId":null,"regId":"잠금된 게시물","regDt":"잠금된 게시물","modId":"잠금된 게시물","modDt":"잠금된 게시물"};
             setFileList([]);
@@ -65,32 +66,36 @@ const BoardRead = () => {
         }
     },[lockedList]);
 
+    // S 삭제
+    const delSuccessAxios = (res) =>{
+        console.log(seq + "삭제 완료" );
+        dispatch(changeMessage(seq+"번 삭제 완료"));
+        dispatch(changeMessageCode("0000"));
+    }
+
+    const delFailAxios = (err) =>{
+        console.log(err);
+        dispatch(changeMessage(seq + "번 삭제 실패"));
+        dispatch(changeMessageCode("0011"));
+    }
+
     function onRemove(seq) {
-             axios.post(deleteApi + "?seq=" + seq)
-            .then(res=>{
-                console.log(seq + "삭제 완료" );
-                dispatch(changeMessage(seq+"번 삭제 완료"));
-                dispatch(changeMessageCode("0000"));
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch(changeMessage(seq + "번 삭제 실패"));
-                dispatch(changeMessageCode("0011"));
-            });
-        ;
+        let formData = new FormData();
+        formData.append("seq", seq);
+        postAxiosFromApi(deleteApi,formData,delSuccessAxios,delFailAxios);
     };
 
     const clickHandler = () =>{
-        if(window.confirm(details.seq + "번 삭제하시겠습니까?")){
-            console.log(details.seq);
+        if(window.confirm("삭제하시겠습니까?")){
+            console.log("삭제");
             onRemove(details.seq);
             dispatch(togglePopup(true));
-            console.log("삭제");
         }else{
-            //else 지워도 됨
-            console.log("취소");
+            alert("취소했습니다.");
         }
     };
+
+    // E 삭제
 
     //목록으로 가기
     const goList = () => {

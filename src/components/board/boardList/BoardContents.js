@@ -1,12 +1,12 @@
 import React,{useState,useEffect} from "react";
-import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 import {changeBlockSize} from '../../../action/pagination';
 import {changeTotalCount,createCheckBox,deleteCheckBox} from '../../../action/list';
 import {togglePopup,changeMessageCode,changeMessage} from '../../../action/popup';
+import { listApi,getAxiosFromApi } from '../../../api';
 
-const Lists= () => {
+const BoardContents= () => {
     const [lists, setLists] = useState([]);
     const searchType = useSelector(state => state.search.searchType);
     const searchKeyword = useSelector(state => state.search.searchKeyword);
@@ -17,6 +17,7 @@ const Lists= () => {
     const lockedList = useSelector(state => state.list.lockedList);
     const popupStatus = useSelector(state => state.popup.popupStatus);
     const dispatch = useDispatch();
+    var history = useHistory();
 
     function timestamp(){ 
         function pad(n) { 
@@ -29,26 +30,35 @@ const Lists= () => {
 
     var now = timestamp();
     
+    
+    const successAxios = (res) =>{
+        console.log(encodeURIComponent(";,/?:@&=+$ test"));
+        console.log(encodeURIComponent(";,/?:@&=+$ "));
+        console.log(res.data.RESULT_DATA.list);
+        setLists(res.data.RESULT_DATA.list);
+        dispatch(changeBlockSize(res.data.RESULT_DATA.search.blockSize));
+        dispatch(changeTotalCount(res.data.RESULT_DATA.search.totalCount));
+    };
+
+    const failAxios = (err) =>{
+        console.log(err);
+        dispatch(changeMessage("리스트 axios 에러"));
+        dispatch(changeMessageCode("1000"));
+        dispatch(togglePopup(true));
+    };
+
     useEffect(()=>{
+        const params = {
+            pageNo:pageNo,
+            pageSize:pageSize,
+            searchType:searchType,
+            searchKeyword:searchKeyword
+        }
         async function fetchDate(){
-            const url = 'http://192.168.100.74:18080/homepage/api/notification/list.do?pageNo='+pageNo+'&pageSize='+pageSize+'&searchType='+searchType+'&searchKeyword='+searchKeyword;
-            console.log(url);
-            await axios.get(url)
-            .then(res=>{
-                console.log(res.data.RESULT_DATA.list);
-                setLists(res.data.RESULT_DATA.list);
-                dispatch(changeBlockSize(res.data.RESULT_DATA.search.blockSize));
-                dispatch(changeTotalCount(res.data.RESULT_DATA.search.totalCount));
-            })
-            .catch(err => {
-                console.log(err);
-                dispatch(changeMessage("리스트 axios 에러"));
-                dispatch(changeMessageCode("1000"));
-                dispatch(togglePopup(true));
-            });
+            await getAxiosFromApi(listApi,params,successAxios,failAxios);
         }
         fetchDate();
-      },[pageNo,pageSize,searchType,searchKeyword,totalCount,popupStatus,lockedList]);
+    },[pageNo,pageSize,searchType,searchKeyword,totalCount,popupStatus,lockedList]);
     
       //개별체크
     const checkHandler = (e) => {
@@ -78,21 +88,28 @@ const Lists= () => {
     var list;
     if (totalCount=== 0 ){
         list = 
-                <tr className="boardList">
-                    <td colSpan="5">조회된 리스트가 없습니다.</td>
-                </tr>;
+            <tr className="boardList">
+                <td colSpan="5">조회된 리스트가 없습니다.</td>
+            </tr>;
     }else {
         list = lists.map(item=>(
-                 <tr className="boardList" key={item.seq}>
-                    <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
-                    <td className="first input">{now-item.regDt < 60*60*24 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}{item.seq}</td>
-                    <td><Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}</Link> </td>
-                    <td>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</td>
-                    <td className="last input">{ lockedList.includes(item.seq) ? "잠금된 게시판" : item.regDt}</td>
-                    {item.fileId !== null ?
-                        <td className="ellipsis"><i className="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></td> : 
-                        <td className="ellipsis">파일X</td>}
-                 </tr> 
+            <tr className="boardList" key={item.seq}>
+            <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
+            <td className="first input">
+                <Link to={"/BoardRead?seq=" + item.seq}>
+                    {now-item.regDt < 60*60*24 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}{item.seq}
+                </Link>
+            </td>
+            <td>
+                <Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}
+                </Link> 
+            </td>
+            <td><Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</Link></td>
+            <td className="last input"><Link to={"/BoardRead?seq=" + item.seq}>{ lockedList.includes(item.seq) ? "잠금된 게시판" : item.regDt}</Link></td>
+            {item.fileId !== null ?
+                <td className="ellipsis"><Link to={"/BoardRead?seq=" + item.seq}><i className="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></Link></td> : 
+                <td className="ellipsis">파일X</td>}
+            </tr> 
         )); 
     }
 
@@ -123,4 +140,4 @@ const Lists= () => {
         
     );
 };
-export default Lists;
+export default BoardContents;
