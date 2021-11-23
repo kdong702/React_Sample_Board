@@ -1,7 +1,7 @@
 import React  from 'react';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import BoardContainer from './components/board/boardContainer';
+import BoardList from './components/board/boardList';
 import BoardCreate from './components/board/BoardCreate';
 import BoardRead from './components/board/BoardRead';
 import BoardUpdate from './components/board/BoardUpdate';
@@ -18,7 +18,7 @@ function App () {
             <Route exact path='/BoardNew' component={BoardCreate} />
             <Route path='/BoardRead' component={BoardRead} />
             <Route exact path='/BoardUpdate' component={BoardUpdate} />
-            <Route exact path='/' component={BoardContainer} />
+            <Route exact path='/' component={BoardList} />
             <Route path='*' component={Error} />
           </Switch>       
           <Popup></Popup>
