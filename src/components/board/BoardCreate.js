@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import { useHistory } from 'react-router';
-import { fileListApi, insertApi, postAxiosFromApi } from '../../api';
+import { insertApi, postAxiosFromApi } from '../../api';
 import Button from '../common/Button';
 
 const BoardCreate = () => {
@@ -11,7 +11,7 @@ const BoardCreate = () => {
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState('Y');  // 노출 여부 
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
-    const [multiFileName, setMultiFileName] = useState('');
+    const [multiFileName, setMultiFileName] = useState(''); // 멀티 파일 이름 집합
 
     const dispatch = useDispatch();
 

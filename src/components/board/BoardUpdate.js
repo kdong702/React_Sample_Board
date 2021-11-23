@@ -146,7 +146,7 @@ export default function BoardUpdate({location}) {
     }
 
     function onCancle() {
-        if(window.confirm("글 작성을 취소하시겠습니까?")) {
+        if(window.confirm("글 수정을 취소하시겠습니까?")) {
             history.push("/");
         }
         else {
