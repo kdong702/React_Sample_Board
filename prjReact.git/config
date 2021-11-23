@@ -8,3 +8,4 @@
 	url = http://192.168.100.74:3009/jeongmiAhn/prjReact.git
 	fetch = +refs/*:refs/*
 	mirror = true
+	pushurl = http://192.168.100.74:3009/DEV_3Team/NID_admin_board_sample.git

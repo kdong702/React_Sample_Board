@@ -5,6 +5,8 @@ import { useHistory } from 'react-router';
 import { insertApi, postAxiosFromApi } from '../../api';
 import Button from '../common/Button';
 
+// 수정된 사항을 테스트하기 위한 커밋을 합니다.
+
 const BoardCreate = () => {
     const [title, setTitle] = useState(''); // 제목
     const [contents, setContents] = useState('');   // 내용
