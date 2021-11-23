@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {changeSearchType,changeSearchKeyword,changeInput} from '../../../action/search';
+import { resetCheckBox } from '../../../action/list';
 
 const Search = ()=>{
     const searchType = useSelector(state => state.search.searchType);
@@ -39,6 +40,7 @@ const Search = ()=>{
         e.preventDefault();
         dispatch(changeSearchType(e.target.selectList.value));
         dispatch(changeSearchKeyword(e.target.searchKeyword.value));
+        dispatch(resetCheckBox());
     }
 
     var selected = searchType == null ? "" : searchType;

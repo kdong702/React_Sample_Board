@@ -6,6 +6,7 @@ const Pagination = () => {
     const pageNo = useSelector(state => state.pagination.pageNo);
     const pageSize = useSelector(state => state.pagination.pageSize);
     const blockSize =  useSelector(state => state.pagination.blockSize);
+    //totalCount를 알아야 finalPage 만들어진다.
     const totalCount = useSelector(state => state.list.totalCount);
     const dispatch = useDispatch();
     
