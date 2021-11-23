@@ -5,7 +5,7 @@ import { useSelector,useDispatch} from 'react-redux';
 import { togglePopup, changeMessageCode, changeMessage } from '../../action/popup';
 import { useHistory } from "react-router";
 import { createLockList, deleteLockList } from "../../action/list";
-import { detailApi, deleteApi, downloadApi,postAxiosFromApi } from "../../api/index";
+import { detailApi, deleteApi, downloadApi, postAxiosFromApi } from "../../api/index";
 
 const BoardRead = () => {
     // 참고: https://znznzn.tistory.com/64
