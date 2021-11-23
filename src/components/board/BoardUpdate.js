@@ -202,7 +202,7 @@ export default function BoardUpdate({location}) {
                 </table>
                 <br/>
                 <div style={{marginBottom: "20px"}}>
-                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} 
+                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%", resize:"none"}} 
                     onKeyUp={(e)=>{checkLength(e)}} onChange={handleContent} defaultValue={initialContents}/>
                 </div>
                 <div className="btn_group">

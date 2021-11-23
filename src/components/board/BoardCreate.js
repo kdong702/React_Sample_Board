@@ -148,7 +148,7 @@ const BoardCreate = () => {
                 </table>
                 <br/>
                 <div style={{marginBottom: "20px"}}>
-                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%"}} onKeyUp={(e)=>{checkLength(e)}}
+                    <textarea id="contents" title="내용" style={{height:"400px", width: "100%", resize:"none"}} onKeyUp={(e)=>{checkLength(e)}}
                     onChange={handleContent}/>
                 </div>
                 <div className="btn_group">
