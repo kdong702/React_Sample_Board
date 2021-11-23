@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = http://192.168.100.74:3009/jeongmiAhn/prjReact.git
+	fetch = +refs/*:refs/*
+	mirror = true
