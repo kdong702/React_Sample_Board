@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
-import axios from 'axios';
 import { useHistory } from 'react-router';
 import { insertApi, postAxiosFromApi } from '../../api';
 
@@ -25,6 +24,9 @@ const BoardCreate = () => {
     };
     const handleFilesChange = (e) => {
         setFiles(e.target.files);
+        for(let i=0; i<files.length; i++){
+        
+        }
         console.log(e.target.files);
         // 파일 이미지 미리보기 우선 생략
         //setFileImage(URL.createObjectURL(e.target.files[0]));
@@ -111,6 +113,7 @@ const BoardCreate = () => {
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
                             <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
+                            <div id="showFile"/>
                             {/* <img alt="" src={fileImage} style={{width: "100%"}}/> */}
                         </td>
                     </tr>
