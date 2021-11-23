@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import axios from 'axios';
 import { useHistory } from 'react-router';
-import { insertTest } from '../../api';
+import { insertApi, postAxiosFromApi } from '../../api';
 
 const BoardCreate = () => {
     const [title, setTitle] = useState(''); // 제목
@@ -70,30 +70,18 @@ const BoardCreate = () => {
             formData.append("files", files[i]);
         }
 
-        // axios.post(insertApi, formData, {
-        //     headers: {
-        //       'Content-Type': 'multipart/form-data' // 컨텐츠 타입이 이와 같이 설정되어야 파일 데이터가 넘어간다.
-        //     }
-        // }).then(function (response) {
-        //     alert("글이 정상적으로 등록되었습니다.");
-        //     history.push("/");
-        //     // 성공 메세지 3줄
-        //     // dispatch(changeMessage("글이 정상적으로 등록되었습니다."));
-        //     // dispatch(changeMessageCode("0000"));
-        //     // dispatch(togglePopup(true));
-        // }).catch(function (error) {
-        //     dispatch(changeMessage("글 등록 실패하였습니다."));
-        //     dispatch(changeMessageCode("0001"));
-        //     dispatch(togglePopup(true));    
-        // });
-
-        function test() {
+        function succFunc() {
+            alert("글이 정상적으로 등록되었습니다.");
             history.push("/");
-            alert("정상 등록")
         }
 
-        insertTest(formData, test);
+        function failFunc() {
+            dispatch(changeMessage("글 등록 실패하였습니다."));
+            dispatch(changeMessageCode("0001"));
+            dispatch(togglePopup(true));    
+        }
 
+        postAxiosFromApi(insertApi, formData, succFunc, failFunc);
     }
 
     return(
@@ -110,7 +98,7 @@ const BoardCreate = () => {
                     <tr>
                         <th scope="row">제목</th>
                         <td><input type='text' id="title" name="title" title="제목" 
-                        style={{width: "100%"}} maxLength="3" onChange={handleTitle} /></td>
+                        style={{width: "100%"}} maxLength="20" onChange={handleTitle} /></td>
                         <th scope="row">노출 여부</th>
                         <td>
                             <select name="viewYn" style={{width: "62px"}} className="ui_sel" onChange={handleSelect}>

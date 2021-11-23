@@ -1,4 +1,3 @@
-
 const Button = ({title,cName,event}) =>{
 
     return(
