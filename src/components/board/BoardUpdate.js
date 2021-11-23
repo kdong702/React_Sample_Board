@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch} from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage,changeSeq} from '../../action/popup';
 import { updateApi, postAxiosFromApi } from "../../api";
+import Button from '../common/Button';
 
 export default function BoardUpdate({location}) {
     // 초기값 
@@ -128,6 +129,16 @@ export default function BoardUpdate({location}) {
         postAxiosFromApi(updateApi + "?seq=" + seq, formData, succFunc, failFunc);
     }
 
+    
+    function onCancle() {
+        if(window.confirm("글 작성을 취소하시겠습니까?")) {
+            history.push("/");
+        }
+        else {
+            return;
+        }
+    }
+
     return(
         <div id="content" style={{padding:"50px", width: "50%"}}>
             <form>
@@ -177,7 +188,8 @@ export default function BoardUpdate({location}) {
                     onKeyUp={(e)=>{checkLength(e)}} onChange={handleContent} defaultValue={initialContents}/>
                 </div>
                 <div className="btn_group">
-                    <a className="btn_pos" type='button' onClick={onUpdate}>전송</a>
+                    <Button title="전송" cName="btn_pos" event = {onUpdate}/>
+                    <Button title="취소" cName="btn_black" event = {onCancle}/>
                 </div>
         </form>
     </div>

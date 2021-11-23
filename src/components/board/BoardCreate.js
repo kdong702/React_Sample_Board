@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import { useHistory } from 'react-router';
 import { insertApi, postAxiosFromApi } from '../../api';
+import Button from '../common/Button';
 
 const BoardCreate = () => {
     const [title, setTitle] = useState(''); // 제목
@@ -86,6 +87,15 @@ const BoardCreate = () => {
         postAxiosFromApi(insertApi, formData, succFunc, failFunc);
     }
 
+    function onCancle() {
+        if(window.confirm("글 작성을 취소하시겠습니까?")) {
+            history.push("/");
+        }
+        else {
+            return;
+        }
+    }
+
     return(
         <div id="content" style={{padding:"50px", width: "50%"}}>
             <form>
@@ -125,7 +135,8 @@ const BoardCreate = () => {
                     onChange={handleContent}/>
                 </div>
                 <div className="btn_group">
-                    <a className="btn_pos" type='button' onClick={onSave}>전송</a>
+                    <Button title="전송" cName="btn_pos" event = {onSave}/>
+                    <Button title="취소" cName="btn_black" event = {onCancle}/>
                 </div>
         </form>
     </div>
