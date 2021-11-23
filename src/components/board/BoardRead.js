@@ -6,6 +6,7 @@ import { togglePopup, changeMessageCode, changeMessage } from '../../action/popu
 import { useHistory } from "react-router";
 import { createLockList, deleteLockList } from "../../action/list";
 import { detailApi, deleteApi, downloadApi, postAxiosFromApi } from "../../api/index";
+import Button from '../common/Button';
 
 const BoardRead = () => {
     // 참고: https://znznzn.tistory.com/64
@@ -68,8 +69,8 @@ const BoardRead = () => {
 
     //글 작성시간 YYYY년 MM월 DD일 HH:mm:ss
     const format = (day) => {
-        var formatDay =  day.substring(0,4) + "년 " + day.substring(4,6) + "월 " + day.substring(6,8) + "일 " + day.substring(8,10)+ ":" + day.substring(10,12) + ":" +day.substring(12,14);
-        return formatDay
+         var formatDay =  day.substring(0,4) + "년 " + day.substring(4,6) + "월 " + day.substring(6,8) + "일 " + day.substring(8,10)+ ":" + day.substring(10,12) + ":" +day.substring(12,14);
+         return formatDay
     }
 
     // S 삭제
@@ -139,7 +140,7 @@ const BoardRead = () => {
                         <th scope="row">작성자</th>
                             <td>{details.regId}</td>
                             <th scope="row">작성일</th>
-                            <td>{format(details.regDt)}</td>
+                            <td>{details.regDt}</td>
                         </tr>
                         <tr>
                             <th scope="row" style={{height: "100%"}}>첨부 이미지</th>
@@ -176,20 +177,11 @@ const BoardRead = () => {
                             fileList: fileList
                         }
                     }}>
-                        <a className="btn_pos">
-                            <span>수정</span>
-                        </a>
+                        <Button title="수정" cName="btn_pos"/>
                     </Link>
-                    <a className="btn_gray" style={{cursor:"pointer"}} onClick={goList}>
-                        <span>목록</span>
-                    </a>                    
-                    <a className="btn_black" style={{cursor:"pointer"}} onClick={clickHandler}>
-                        <span>삭제</span>
-                    </a>
-                    <a className="btn_gray" style={{cursor:"pointer"}} onClick={lockHandler}>
-                        <span>{lockedList.includes(parseInt(seq))? "잠금해제" : "잠금"}</span>
-                    </a>
-                    
+                    <Button title="목록" cName="btn_gray" event = {goList}/>                    
+                    <Button title="삭제" cName="btn_black" event = {clickHandler}/>    
+                    <Button title={lockedList.includes(parseInt(seq))? "잠금해제" : "잠금"} cName="btn_gray" event = {lockHandler}/>          
                 </div>
             </form>
         </div>

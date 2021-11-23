@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import { useDispatch} from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage,changeSeq} from '../../action/popup';
 import { updateApi, postAxiosFromApi } from "../../api";
