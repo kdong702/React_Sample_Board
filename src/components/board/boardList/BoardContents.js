@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Link,useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {changeBlockSize} from '../../../action/pagination';
 import {changeTotalCount,createCheckBox,deleteCheckBox} from '../../../action/list';
 import {togglePopup,changeMessageCode,changeMessage} from '../../../action/popup';
@@ -103,7 +103,7 @@ const BoardContents= () => {
             <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
             
             <td className="first input">
-            {now-item.regDt < 60*60*24 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}<Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}
+            {now-item.regDt < 1000000 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}<Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}
                 </Link> 
             </td>
             <td className="wrap"><Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</Link></td>
