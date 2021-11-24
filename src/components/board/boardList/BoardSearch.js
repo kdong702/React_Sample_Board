@@ -43,7 +43,7 @@ const Search = ()=>{
         dispatch(resetCheckBox());
     }
 
-    var selected = searchType == null ? "" : searchType;
+    var selected = searchType == null ? "all" : searchType;
 
     return(
         <div className="form_box" style={{marginBottom: 30}}>
@@ -66,7 +66,7 @@ const Search = ()=>{
                                             </select>
                                         </th>
                                         <td className="input">
-                                            <input type="text" name="searchKeyword" id="searchKeyword"  style={{width: "100%"}} defaultValue={searchKeyword} />
+                                            <input type="text" name="searchKeyword" id="searchKeyword"  style={{width: "100%"}} placeholder="검색어 입력" defaultValue={searchKeyword} />
                                         </td>
                                     </tr>
                                 </tbody>
