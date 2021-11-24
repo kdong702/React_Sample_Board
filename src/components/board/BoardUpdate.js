@@ -15,7 +15,7 @@ export default function BoardUpdate({location}) {
     // update시 필요. fileId 는 게시글마다 fix 된 상태이기 때문에 그대로 가지고 있어도 됨!
     const seq = location.state.seq;
     const fileId = location.state.fileId;
-    console.log(fileId);
+
     // state 관리
     const [title, setTitle] = useState(initialTitle); // 제목
     const [contents, setContents] = useState(initialContents);   // 내용
@@ -52,10 +52,18 @@ export default function BoardUpdate({location}) {
     };
     const handleFilesChange = (e) => {
         setMultiFileName('');
-        setFiles(e.target.files);
+
+        if (e.target.files.length <= (5 - fileList.length)) {
+            setFiles(e.target.files);
+        }
+        else {
+            alert("파일 개수는 5개를 초과할 수 없습니다.");
+            e.target.value = '';
+            return;
+        }
     
         let str = '';
-
+        
         // files 배열의 길이가 1보다 크다면(즉, 멀티 파일이라면)
         if(e.target.files.length > 1)
         {

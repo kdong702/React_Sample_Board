@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import { useHistory } from 'react-router';
-import { insertApi, postAxiosFromApi } from '../../api';
+import { insertApi, listApi, postAxiosFromApi } from '../../api';
 import Button from '../common/Button';
+
+// 수정된 사항을 테스트하기 위한 커밋을 합니다.
 
 const BoardCreate = () => {
     const [title, setTitle] = useState(''); // 제목
@@ -26,7 +28,15 @@ const BoardCreate = () => {
     };
     const handleFilesChange = (e) => {
         setMultiFileName('');
-        setFiles(e.target.files);
+        
+        if (e.target.files.length <= 5) {
+            setFiles(e.target.files);
+        }
+        else {
+            alert("파일 개수는 5개를 초과할 수 없습니다.");
+            e.target.value = '';
+            return;
+        }
     
         let str = '';
 
