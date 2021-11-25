@@ -13,7 +13,7 @@ const BoardCreate = () => {
     const [files, setFiles] = useState(''); // 파일
     const [viewYn, setViewYn] = useState('Y');  // 노출 여부 
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
-    const [multiFileName, setMultiFileName] = useState(''); // 멀티 파일 이름 집합
+    const [multiFileNames, setMultiFileNames] = useState(''); // 멀티 파일 이름 집합
 
     const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ const BoardCreate = () => {
         setViewYn(e.target.value);
     };
     const handleFilesChange = (e) => {
-        setMultiFileName('');
+        setMultiFileNames('');
         
         if (e.target.files.length <= 5) {
             setFiles(e.target.files);
@@ -50,7 +50,7 @@ const BoardCreate = () => {
                 }       
             }
 
-            setMultiFileName(str);
+            setMultiFileNames(str);
         }
 
         // 파일 이미지 미리보기 우선 생략
@@ -147,7 +147,7 @@ const BoardCreate = () => {
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
                             <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
-                            <div>{multiFileName.split("\n").map(multiFileName => {
+                            <div>{multiFileNames.split("\n").map(multiFileName => {
                                 return (<span>{multiFileName}<br/></span>)
                             })}</div>
                             {/* <div>{multiFileName}</div> */}

@@ -24,7 +24,7 @@ export default function BoardUpdate({location}) {
     //const [fileImage, setFileImage] = useState(""); // 파일 미리보기
     const [fileList, setFileList] = useState(initialFileList); // 파일 리스트
     const [fileSeqs, setFileSeqs] = useState([]); // 파일 seq
-    const [multiFileName, setMultiFileName] = useState(''); // 멀티 파일 이름 집합
+    const [multiFileNames, setMultiFileNames] = useState(''); // 멀티 파일 이름 집합
 
     // 첫 렌더링 때 seq 세팅
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function BoardUpdate({location}) {
         setViewYn(e.target.value);
     };
     const handleFilesChange = (e) => {
-        setMultiFileName('');
+        setMultiFileNames('');
 
         if (e.target.files.length <= (5 - fileList.length)) {
             setFiles(e.target.files);
@@ -74,7 +74,7 @@ export default function BoardUpdate({location}) {
                 }       
             }
 
-            setMultiFileName(str);
+            setMultiFileNames(str);
         }
         //setFileImage(URL.createObjectURL(e.target.files[0]));
         //console.log(URL.createObjectURL(e.target.files[0]));
@@ -189,7 +189,7 @@ export default function BoardUpdate({location}) {
                         <th scope="row">첨부이미지</th>
                         <td colSpan='3'>
                             <input multiple type="file" id="files" onChange={handleFilesChange} accept="image/*"/>
-                            <div>{multiFileName.split("\n").map(multiFileName => {
+                            <div>{multiFileNames.split("\n").map(multiFileName => {
                                 return (<span>{multiFileName}<br/></span>)
                             })}</div>
                             {/* <img alt="" src={fileImage}  style={{width: "100%"}}/> */}
