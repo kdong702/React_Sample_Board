@@ -71,7 +71,10 @@ const BoardRead = () => {
     //글 작성시간 YYYY년 MM월 DD일 HH:mm:ss
     const format = (day) => {
         var formatDay = "";
-        if(day !== undefined){
+        if(lockedList.includes(parseInt(seq))){
+            formatDay = "잠금된 게시물";
+        }
+        else if(day !== undefined){
              formatDay =  day.substring(0,4) + "년 " + day.substring(4,6) + "월 " + day.substring(6,8) + "일 " + day.substring(8,10)+ ":" + day.substring(10,12) + ":" +day.substring(12,14);
         }else{
              formatDay = day;
