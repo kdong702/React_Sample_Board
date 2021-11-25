@@ -11,7 +11,7 @@ import Button from '../../common/Button';
 import {togglePopup,changeMessageCode,changeMessage} from '../../../action/popup';
 import { resetCheckBox } from '../../../action/list';
  
-function BoardBtn() {
+const BoardBtn = () => {
 	// store 의 상태가 바뀔 때마다 상태를 받아온다.
     const checkedList = useSelector(state => state.list.checkedList);
     const dispatch = useDispatch();

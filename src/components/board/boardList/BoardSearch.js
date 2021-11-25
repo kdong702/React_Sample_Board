@@ -38,9 +38,15 @@ const Search = ()=>{
     
     const submitHandler = (e) =>{
         e.preventDefault();
-        dispatch(changeSearchType(e.target.selectList.value));
-        dispatch(changeSearchKeyword(e.target.searchKeyword.value));
-        dispatch(resetCheckBox());
+        if( e.target.searchKeyword.value.includes("[")  || e.target.searchKeyword.value.includes("]") ){
+            alert("특수문자 [ ] 검색 불가능합니다.");
+        }else if(e.target.searchKeyword.value === "^"){
+            alert("특수문자 ^ 검색 불가능합니다.")
+        }else{
+            dispatch(changeSearchType(e.target.selectList.value));
+            dispatch(changeSearchKeyword(e.target.searchKeyword.value));
+            dispatch(resetCheckBox());
+        }
     }
 
     var selected = searchType == null ? "all" : searchType;
