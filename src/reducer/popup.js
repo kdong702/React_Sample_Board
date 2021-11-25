@@ -26,5 +26,6 @@ export default handleActions(
             ...state,
             seq: action.payload,
         })
-    },initialState
+    },
+    initialState
 );

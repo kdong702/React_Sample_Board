@@ -16,19 +16,23 @@ const BoardContents= () => {
     const checkedList = useSelector(state => state.list.checkedList);
     const lockedList = useSelector(state => state.list.lockedList);
     const popupStatus = useSelector(state => state.popup.popupStatus);
+    const startDay = useSelector(state => state.search.startDay);
+    const endDay = useSelector(state => state.search.endDay);
     const dispatch = useDispatch();
 
     //현재시간을 기준으로 new 생성하기 위해
-    function timestamp(){ 
-        function pad(n) { 
-            return n<10 ? "0"+n :""+n; 
-        } 
-        var d=new Date();
+    var d=new Date();
+    
+    function pad(n) { 
+        return n<10 ? "0"+n :""+n; 
+    } 
+
+    function timestamp(d){ 
         var format = d.getFullYear()+ pad(d.getMonth()+1)+ pad(d.getDate())+ pad(d.getHours())+ pad(d.getMinutes())+ pad(d.getSeconds()) ; 
         return format
     }
 
-    var now = timestamp();
+    var now = timestamp(d);
     
     //글 작성시간 YYYY년 MM월 DD일 HH:mm:ss
     const format = (day) => {
@@ -37,9 +41,6 @@ const BoardContents= () => {
     }
 
     const successAxios = (res) =>{
-        console.log(encodeURIComponent(";,/?:@&=+$ test"));
-        console.log(encodeURIComponent(";,/?:@&=+$ "));
-        console.log(res.data.RESULT_DATA.list);
         setLists(res.data.RESULT_DATA.list);
         dispatch(changeBlockSize(res.data.RESULT_DATA.search.blockSize));
         dispatch(changeTotalCount(res.data.RESULT_DATA.search.totalCount));
@@ -90,6 +91,9 @@ const BoardContents= () => {
         }
     };
     
+    //기간 설정하기 위핸 리스트
+    var periodLists = [];
+    periodLists = lists.filter(list => (list.regDt >= startDay) && (list.regDt <= endDay));
 
     var list;
     if (totalCount=== 0 ){
@@ -98,19 +102,20 @@ const BoardContents= () => {
                 <td colSpan="5">조회된 리스트가 없습니다.</td>
             </tr>;
     }else {
-        list = lists.map(item=>(
+        list = periodLists.map(item=>(
             <tr className="boardList" key={item.seq}>
-            <td className=""><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
+            <td className="first input"><input type="checkbox" id={item.seq} onChange={checkHandler} checked={checkedList.includes((item.seq))}></input></td>
             
-            <td className="first input">
+            <td className="">
             {now-item.regDt < 1000000 ? <i className="material-icons" style={{fontSize: "23px", color: "orange",verticalAlign:"middle"}}>fiber_new</i> : ""}<Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(parseInt(item.seq)) ? "잠금된 게시판" : item.title}
                 </Link> 
             </td>
             <td className="wrap"><Link to={"/BoardRead?seq=" + item.seq}>{lockedList.includes(item.seq) ? "잠금된 게시판" : item.contents}</Link></td>
-            <td className="last input"><Link to={"/BoardRead?seq=" + item.seq}>{ lockedList.includes(item.seq) ? "잠금된 게시판" : format(item.regDt)}</Link></td>
+            <td><Link to={"/BoardRead?seq=" + item.seq}>{ lockedList.includes(item.seq) ? "잠금된 게시판" : item.regId}</Link></td>
+            <td className=""><Link to={"/BoardRead?seq=" + item.seq}>{ lockedList.includes(item.seq) ? "잠금된 게시판" : format(item.regDt)}</Link></td>
             {item.fileId !== null ?
-                <td className="ellipsis"><Link to={"/BoardRead?seq=" + item.seq}><i className="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></Link></td> : 
-                <td className="ellipsis">파일X</td>}
+                <td className="ellipsis last input"><Link to={"/BoardRead?seq=" + item.seq}><i className="fa fa-file-archive-o" style={{fontSize: "18px"}}></i></Link></td> : 
+                <td className="ellipsis last input">파일X</td>}
             </tr> 
         )); 
     }
@@ -119,8 +124,9 @@ const BoardContents= () => {
         <table className="dtbl_col" cellSpacing="0" cellPadding="0" summary="">
             <colgroup>
                 <col style={{width: "5%"}} />
+                <col style={{width: "25%"}} />
                 <col style={{width: "35%"}} />
-                <col style={{width: "35%"}} />
+                <col style={{width: "10%"}} />
                 <col style={{width: "20%"}} />
                 <col style={{width: "5%"}} />
             </colgroup>
@@ -129,6 +135,7 @@ const BoardContents= () => {
                     <th scope="col"><input type="checkbox" onChange={allCheckHandler} checked={lists.every((el)=> checkedList.includes(el.seq)) && lists.length !== 0}></input></th>
                     <th scope="col">제목</th>
                     <th scope="col">내용</th>
+                    <th scope="col">작성자</th>
                     <th scope="col">등록일</th>
                     <th scope="col">첨부파일</th>
                 </tr>
