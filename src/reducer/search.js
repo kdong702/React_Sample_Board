@@ -1,5 +1,4 @@
 import { handleActions } from "redux-actions";
-
 import {CHANGE_SEARCHTYPE,CHANGE_SEARCHKEYWORD,CHANGE_INPUT,CHANGE_STARTDAY,CHANGE_ENDDAY} from '../action/search'
 
 var today = new Date();

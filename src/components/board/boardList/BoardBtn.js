@@ -5,9 +5,7 @@ import xlsx from 'xlsx';
 import { Link } from 'react-router-dom';
 import { CSVLink } from 'react-csv';
 import { listApi,getAxiosFromApi,deleteApi,postAxiosFromApi } from '../../../api';
- 
 import Button from '../../common/Button';
-
 import {togglePopup,changeMessageCode,changeMessage} from '../../../action/popup';
 import { resetCheckBox } from '../../../action/list';
  

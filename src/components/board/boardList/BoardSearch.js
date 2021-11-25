@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {changeSearchType,changeSearchKeyword,changeInput} from '../../../action/search';
 import { resetCheckBox } from '../../../action/list';

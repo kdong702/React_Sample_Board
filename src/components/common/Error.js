@@ -1,5 +1,4 @@
 import {useHistory,useLocation} from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';;
 
 const Error404 = () =>{
     var history = useHistory();

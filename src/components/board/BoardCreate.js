@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {togglePopup,changeMessageCode,changeMessage} from '../../action/popup';
 import { useHistory } from 'react-router';
-import { insertApi, listApi, postAxiosFromApi } from '../../api';
+import { insertApi, postAxiosFromApi } from '../../api';
 import Button from '../common/Button';
 
 // 수정된 사항을 테스트하기 위한 커밋을 합니다.
